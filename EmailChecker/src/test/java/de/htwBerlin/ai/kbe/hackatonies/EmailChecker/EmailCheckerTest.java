@@ -1,11 +1,10 @@
 package de.htwBerlin.ai.kbe.hackatonies.EmailChecker;
 
 import org.junit.Test;
-import org.junit.*;
 
-/**
- * Unit test for simple App.
- */
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 public class EmailCheckerTest
 {   
 	

@@ -1,6 +1,4 @@
 package de.htwBerlin.ai.kbe.hackatonies.EmailChecker;
-import org.apache.commons.validator.Validator;
-import org.apache.commons.validator.ValidatorResources;
 
 import org.apache.commons.validator.routines.EmailValidator;
 

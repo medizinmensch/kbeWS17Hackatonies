@@ -1,9 +1,5 @@
 package de.htwBerlin.ai.kbe.hackatonies.EmailChecker;
 
-/**
- * Hello world!
- *
- */
 public class EmailChecker 
 {
 	public boolean checkEmail(String in) {
