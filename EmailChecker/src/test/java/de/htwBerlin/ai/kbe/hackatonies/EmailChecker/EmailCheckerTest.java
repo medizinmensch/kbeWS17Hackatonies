@@ -12,7 +12,12 @@ public class EmailCheckerTest
 	
     @Test
     public void isNotNull(){
-    	assertFalse("Must not be null", emailChecker.checkEmail(""));
+    	assertFalse("Must not be null", emailChecker.checkEmail());
+    }
+
+    @Test
+    public void isEmpty(){
+        assertFalse("Must not be null", emailChecker.checkEmail(""));
     }
     
     @Test

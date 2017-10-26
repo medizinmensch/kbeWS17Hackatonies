@@ -6,4 +6,11 @@ public class EmailChecker
 		ExternalEmailSyntaxChecker extVal = new ExternalEmailSyntaxChecker();
 		return extVal.IsValid(in);
 	}
+
+	//null based initialisation
+	public boolean checkEmail() {
+		return false;
+	}
+
+
 }
