@@ -31,13 +31,28 @@ public class EmailCheckerTest
     }
     
     @Test
-    public void specialCharacters() {
+    public void validLocalPartSpecialCharacters() {
     	assertTrue("Did not accept special Characters", emailChecker.checkEmail("disposable.style.email.with+symbol@example.com"));
     }
     
     @Test
-    public void superUnusualCharacters() {
+    public void validLocalPartSuperUnusualCharacters() {
     	assertTrue("Did not accept special Characters", emailChecker.checkEmail("\"very.(),:;<>[]\\\".VERY.\\\"very@\\\\ \\\"very\\\".unusual\"@strange.example.com"));
+    }
+
+    @Test
+    public void invalidDomainHyphenAtBeginning() {
+        assertFalse("if domain begins with hyphen, false should be returned", emailChecker.checkEmail("symbol@-example.com"));
+    }
+
+    @Test
+    public void invalidDomainHyphenAtEnd() {
+        assertFalse("if domain ends with hyphen, false should be returned", emailChecker.checkEmail("symbol@example.com-"));
+    }
+
+    @Test
+    public void invalidDomainSpecialCharacters() {
+        assertFalse("Domain cannot contain special Characters", emailChecker.checkEmail("symbol@$e%xa&mple.com"));
     }
     
 }
