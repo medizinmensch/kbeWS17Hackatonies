@@ -7,7 +7,7 @@ public class EmailChecker
 		return extVal.IsValid(in);
 	}
 
-	//null based initialisation
+	//null based check
 	public boolean checkEmail() {
 		return false;
 	}
