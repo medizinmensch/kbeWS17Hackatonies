@@ -1,1 +1,3 @@
-hallo witz
+// Beendet das Programm. Immer einfügen
+							// wenn klar ist: wenn hier der Fehler auftritt ist es eh vorbei...
+							// Exit Code 1 ist gängig für "da ist was schief gelaufen"

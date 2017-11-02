@@ -7,18 +7,16 @@ import org.apache.commons.io.FilenameUtils;
 
 public class readConfigFile {
 
-    public static Properties readIn(String path) {
-
-        //TODO: throw right exception. youri das musst du iwie try-catchen oder so
+    public static Properties readIn(String path) throws IOException{
         String extension = FilenameUtils.getExtension(path);
-        //if (!extension.equals("properties"))
-            //throw new FileFormatException();
-        //throw new IncorrectFileTypeError
+        if (!extension.equals("properties"))
+            throw new IOException("File is not a property file");
+
 
         Properties prop = new Properties();
         File file = new File(path);
         InputStream input = null;
-
+        
         try {
 			if (path.equals(null)) {
 				throw new NullPointerException();
@@ -32,10 +30,10 @@ public class readConfigFile {
 
         } catch (FileNotFoundException ex) {
             System.out.println("Datei existiert nicht.\n" + ex);
+            throw new IOException("...");
         } catch (IOException ex) {
             ex.printStackTrace();
-        } catch (NullPointerException ex) {
-            System.out.println("Pfad wurde nicht übermittelt");
+            throw new IOException("...");
         } finally {
             if (input != null) {
                 try {
@@ -45,27 +43,5 @@ public class readConfigFile {
                 }
             }
         }
-
-
-
-        /*
-
-
-
-        try {
-
-
-
-            if (prop == null) {
-                throw new NullPointerException("bla");
-            }
-
-            return prop;
-
-        } catch (IOException ex) {
-            throw new FileNotFoundException("Datei existiert nicht.");
-        }
-        */
-        return null;
     }
 }

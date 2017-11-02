@@ -20,7 +20,7 @@ public class configFileTest {
     }
 
     //funktioniert nicht. kein plan warum. er wirft die exception, geht dann aber tiefer ins system und wirft dann einen assertion error
-    @Test(expected = FileNotFoundException.class)
+    @Test(expected = java.io.FileNotFoundException.class)
     public void fileDoesNotExist() {
         String path = "hello.properties";
         Properties props = myConfigFileReader.readIn(path);
@@ -42,16 +42,16 @@ public class configFileTest {
         try {
             myClass = Class.forName(className);
         } catch (ClassNotFoundException e) {
-
         }
     }
 
-
-    //TODO: richtige exception einfügen
-    @Test(expected = FileFormatException)
+    /*
+    //nicht benötigt da dies in der main abgefangen werden muss
+      @Test(expected = FileFormatException)
     public void notAPropertyFile() {
         String path = "runMeConfig.abc";
         Properties props = myConfigFileReader.readIn(path);
-    }
+    }*/
+
 
 }
