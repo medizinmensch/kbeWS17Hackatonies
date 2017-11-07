@@ -5,7 +5,7 @@ import java.util.IllegalFormatException;
 import java.util.Properties;
 import org.apache.commons.io.FilenameUtils;
 
-public class readConfigFile {
+public class ReadConfigFile {
 
     public static Properties readIn(String path) throws IOException{
         String extension = FilenameUtils.getExtension(path);

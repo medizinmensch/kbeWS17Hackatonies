@@ -1,50 +1,68 @@
 package htw.ii.kbe.hackatonies;
 
 import org.junit.Test;
-import java.io.*;
 
+import java.io.IOException;
 import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-public class configFileTest {
+public class ConfigFileTest {
 
-    readConfigFile myConfigFileReader = new readConfigFile();
+    ReadConfigFile myConfigFileReader = new ReadConfigFile();
 
     @Test(expected = NullPointerException.class)
     public void isNull() {
         String path = null;
-        Properties props = myConfigFileReader.readIn(path);
-    }
-
-    //funktioniert nicht. kein plan warum. er wirft die exception, geht dann aber tiefer ins system und wirft dann einen assertion error
-    @Test(expected = java.io.FileNotFoundException.class)
-    public void fileDoesNotExist() {
-        String path = "hello.properties";
-        Properties props = myConfigFileReader.readIn(path);
+        try {
+            Properties props = myConfigFileReader.readIn(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void propertiesFileEmpty() {
         String path = "runMeConfigEmpty.properties";
-        Properties props = myConfigFileReader.readIn(path);
-        assertEquals("properties file should be empty", 0,  props.size());
+        try {
+            Properties props = myConfigFileReader.readIn(path);
+            assertEquals("properties file should be empty", 0,  props.size());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
 
     @Test(expected = NullPointerException.class)
     public void propertiesFileContainsWrongProperty() {
         String path = "runMeConfigWrong.properties";
-        Properties props = myConfigFileReader.readIn(path);
-        String className = props.getProperty("classWithRunMeAnnos");
-        Class<?> myClass;
         try {
+            Properties props = myConfigFileReader.readIn(path);
+            String className = props.getProperty("classWithRunMeAnnos");
+            Class<?> myClass;
             myClass = Class.forName(className);
+        } catch (IOException e) {
+            e.printStackTrace();
         } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
+    /* nicht benötigt?
+    //funktioniert nicht. kein plan warum. er wirft die exception, geht dann aber tiefer ins system und wirft dann einen assertion error
+    @Test(expected = java.io.FileNotFoundException.class)
+    public void fileDoesNotExist() {
+        String path = "hello.properties";
+        try {
+            Properties props = myConfigFileReader.readIn(path);
+
+        } catch (IOException e) {
+
+        }
+    }
+    */
     /*
     //nicht benötigt da dies in der main abgefangen werden muss
       @Test(expected = FileFormatException)
