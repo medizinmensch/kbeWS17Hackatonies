@@ -1,5 +1,6 @@
 package htw.ii.kbe.hackatonies;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Properties;
@@ -39,14 +40,18 @@ public class MethodRunner {
 		Class<?> myClass;
 
 		try {
-			myClass = Class.forName(className);
+			RunMeMethods myRunner = RunMeMethods.create();
+			myClass = myRunner.getClass();
+
 			for (Method method : myClass.getDeclaredMethods()) {
-				runMeMethods.RunMe mXY = method.getAnnotation(runMeMethods.RunMe.class);
+				RunMeAnnotation.RunMe mXY = method.getAnnotation(RunMeAnnotation.RunMe.class);
 
 				// if method has annotation it gets printed out
 				if (mXY != null) {
 					try {
 						System.out.println(method.getName());
+						//does not work? exactly like in the given example. error: (No Method found with Annotation: <method44>)
+						//method.invoke(myRunner);
 					} catch (Exception e) {
 						System.out.println("No Method found with Annotation: <" + method.getName() + ">.");
 					}
@@ -55,11 +60,15 @@ public class MethodRunner {
 
 				/*
 				 * another way for (Annotation anno: method.getDeclaredAnnotations()) { if (anno
-				 * instanceof runMeMethods.RunMe){ }
+				 * instanceof RunMeMethods.RunMeAnnotation){ }
 				 */
 			}
+		} catch (InstantiationException e) {
+			System.out.println("." + e);
 		} catch (ClassNotFoundException e) {
-			System.out.println("Property file enthält keinen Klassennamen." + e);
+			System.out.println("." + e);
+		} catch (IllegalAccessException e) {
+			System.out.println("." + e);
 		}
 	}
 }

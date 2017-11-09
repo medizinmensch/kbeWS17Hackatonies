@@ -1,13 +1,12 @@
 package htw.ii.kbe.hackatonies;
 
 import java.io.*;
-import java.util.IllegalFormatException;
 import java.util.Properties;
 import org.apache.commons.io.FilenameUtils;
 
 public class ReadConfigFile {
 
-    public static Properties readIn(String path) throws IOException{
+    public static Properties readIn(String path) throws IOException {
         String extension = FilenameUtils.getExtension(path);
         if (!extension.equals("properties"))
             throw new IOException("File is not a property file");
@@ -24,6 +23,7 @@ public class ReadConfigFile {
 			else if(!file.exists()) {
 				throw new FileNotFoundException();
 			}
+
             input = new FileInputStream(path);
             prop.load(input);
             return prop;

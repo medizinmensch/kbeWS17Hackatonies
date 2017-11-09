@@ -13,6 +13,23 @@ public class ConfigFileTest {
 
     ReadConfigFile myConfigFileReader = new ReadConfigFile();
 
+    @Test
+    public void validConfigFile() {
+        String path = "runMeConfig.properties";
+        try {
+            Properties props = myConfigFileReader.readIn(path);
+            String className = props.getProperty("classWithRunMeAnnos");
+            Class<?> myClass;
+            myClass = Class.forName(className);
+            assertEquals("expected different class name", "htw.ii.kbe.hackatonies.RunMeMethods", myClass.getName());
+        }
+        catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Test(expected = NullPointerException.class)
     public void isNull() {
         String path = null;
