@@ -25,16 +25,12 @@ public class MethodRunner {
 		}
 		
 		String PropToLookFor = "classWithRunMeAnnos";
-		String className = null;
-		try {
-			className = myProperties.getProperty(PropToLookFor);
-			if ( className.equals(null)|| className.equals("")) {
-				System.out.println("could not find...");
-				System.exit(1);
-			}
-		} catch (NullPointerException e) {
-			System.out.println("Property File does not contain the right property.\n" + e);
-			System.exit(1); 
+		String className = myProperties.getProperty(PropToLookFor);
+
+		if (className == null || className.equals("")) {
+			System.out.println("Could not find right class.");
+			System.out.println("System shutdown.\n");
+			System.exit(1);
 		}
 
 		Class<?> myClass;
@@ -46,12 +42,12 @@ public class MethodRunner {
 			for (Method method : myClass.getDeclaredMethods()) {
 				RunMeAnnotation.RunMe mXY = method.getAnnotation(RunMeAnnotation.RunMe.class);
 
-				// if method has annotation it gets printed out
+				// if method has annotation it gets printed out (and should be invoked...)
 				if (mXY != null) {
 					try {
 						System.out.println(method.getName());
 						//does not work? exactly like in the given example. error: (No Method found with Annotation: <method44>)
-						//method.invoke(myRunner);
+						method.invoke(myRunner);
 					} catch (Exception e) {
 						System.out.println("No Method found with Annotation: <" + method.getName() + ">.");
 					}
