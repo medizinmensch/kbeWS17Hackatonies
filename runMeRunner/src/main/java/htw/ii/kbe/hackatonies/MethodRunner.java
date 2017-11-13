@@ -36,8 +36,9 @@ public class MethodRunner {
 		Class<?> myClass;
 
 		try {
-			RunMeMethods myRunner = RunMeMethods.create();
-			myClass = myRunner.getClass();
+			//RunMeMethods myRunner = RunMeMethods.create();
+			myClass = Class.forName(className);
+			Object myRunner = myClass.newInstance();
 
 			for (Method method : myClass.getDeclaredMethods()) {
 				RunMeAnnotation.RunMe mXY = method.getAnnotation(RunMeAnnotation.RunMe.class);
@@ -45,9 +46,9 @@ public class MethodRunner {
 				// if method has annotation it gets printed out (and should be invoked...)
 				if (mXY != null) {
 					try {
-						System.out.println(method.getName());
-						//does not work? exactly like in the given example. error: (No Method found with Annotation: <method44>)
-						method.invoke(myRunner);
+						//System.out.print(method.getName() + ": ");
+						//first parameter is instance of class, second is normal parameter for method, got out of annotation
+						method.invoke(myRunner, mXY.input());
 					} catch (Exception e) {
 						System.out.println("No Method found with Annotation: <" + method.getName() + ">.");
 					}
