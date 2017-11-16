@@ -1,6 +1,8 @@
 Oskar war hier...
 und hat super tolle sachen mit dem repo gemacht. hihi
 
+Jar Datei entdecken im terminal: jar -xvf “Datei.jar”
+
 
 
 ************************************
