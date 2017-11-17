@@ -64,6 +64,8 @@ public class SongsStoreServlet extends HttpServlet {
 	//todo should be atomic
     private AtomicInteger currentID = new AtomicInteger();
 
+    private Song recommendedSong = new Song(0, "Shivaya", "Spirit Architect", "Moonshine", 2017);
+
 	// load songStore from JSON file and set currentID
 	public void init(ServletConfig servletConfig) throws ServletException {
 		System.out.println("In init");
@@ -72,7 +74,7 @@ public class SongsStoreServlet extends HttpServlet {
 		objectMapper = new ObjectMapper();
 		InputStream input = this.getClass().getClassLoader().getResourceAsStream(jsonFile);
 		try {
-			songList = (List<Song>) objectMapper.readValue(input, new TypeReference<List<Song>>() {
+			songList = objectMapper.readValue(input, new TypeReference<List<Song>>() {
 			});
 		} catch (IOException e) {
 			System.out.println("bla");
@@ -81,12 +83,13 @@ public class SongsStoreServlet extends HttpServlet {
 		for (Song s: songList) {
 			songStore.put(s.getId(), s);
 		}
+		currentID.set(songStore.size());
 	}
 
     
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		//parameter?all
+		//parameter?all -> give all songs
 
 		//parameter?songId=6
 		//nicht vorhanden, kein value
@@ -103,35 +106,71 @@ public class SongsStoreServlet extends HttpServlet {
 			param = paramNames.nextElement();
 			paramValue = request.getParameter(param);
 			if (param.equals("all")) {
-				Enumeration headerNames = request.getHeaderNames();
-				while (headerNames.hasMoreElements()) {
-					String key = (String) headerNames.nextElement();
-					responseStr.append(key + "=");
-					String value2 = request.getHeader(key);
-					responseStr.append(value2 + "\n");
-				}
+				responseStr.append(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(songStore));
 			}
 			else if (param.equals("songId")) {
-				Enumeration headerNames = request.getHeaderNames();
-				while (headerNames.hasMoreElements()) {
-					String headerName = headerNames.nextElement().toString();
-					if (headerName.equals(paramValue)) {
-						responseStr.append(headerName + "=");
-						String value2 = request.getHeader(headerName);
-						responseStr.append(value2 + "\n");
-					}
-
+				int paramValueInt = Integer.parseInt(paramValue);
+				if (paramValue.equals("")) {
+					//todo do different: getting error 500, inetrnal server error, catch numberformatexception
+					responseStr.append("Ihr Parameter enthielt keine Id.\n");
+					responseStr.append("Die Datenbank enthält Songs bis zur Id: ");
+					responseStr.append(songStore.size());
 				}
+				else if (songStore.containsKey(paramValueInt)) {
+					Song mySong = (Song) songStore.get(paramValueInt);
+					System.out.println(mySong.getId() + ", " + mySong.getTitle());
+					responseStr.append(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(mySong));
+				}
+				else {
+					//songId nicht vorhanden
+					responseStr.append("Wir konnten leider den Song zu Ihrer SongId nicht finden.\n");
+					responseStr.append("Probieren sie doch stattdessen diesen Song:\n\n");
+					responseStr.append(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(recommendedSong));
+				}
+
 			}
 		}
 
 		//write json
+		try (PrintWriter out = response.getWriter()) {
+			out.println(responseStr.toString());
+		}
 	}
 
 	
-//	@Override
-//	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-//	}
+	@Override
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//insert payload which contains new song into database
+
+		//check if it has right values: can be casted into song, no values are empty
+		//else give format as response that user has to use
+		//generate id
+
+		StringBuilder responseStr = new StringBuilder("");
+
+		//todo try catch this
+		InputStream inputStream = request.getInputStream();
+		Song mySong = (Song) objectMapper.readValue(inputStream, new TypeReference<Song>() {
+		});
+		if (songStore.containsValue(mySong)) {
+			//song already in database
+			responseStr.append("Sorry. Song is already in our Database.");
+		}
+		else {
+			//add song to database
+			mySong.setId(currentID.incrementAndGet());
+			songStore.put(currentID.get(), mySong);
+			responseStr.append("Added Song \"");
+			responseStr.append(mySong.getTitle());
+			responseStr.append("\", Id: ");
+			responseStr.append(currentID.get());
+		}
+
+
+		try (PrintWriter out = response.getWriter()) {
+			out.println(responseStr);
+		}
+	}
 	
 //	@Override
 //	public void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -145,6 +184,7 @@ public class SongsStoreServlet extends HttpServlet {
 	@Override
 	public void destroy() {
 		System.out.println("In destroy");
-		//concurrent hash map speichern in json file
+		//todo concurrent hash map speichern in json file
+		//achtung: nur die values der hashmap abspeichern, nicht die keys
 	}
 }
