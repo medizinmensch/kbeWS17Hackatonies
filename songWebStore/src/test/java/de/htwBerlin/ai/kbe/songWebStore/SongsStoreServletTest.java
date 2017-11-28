@@ -7,9 +7,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.ServletException;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -26,11 +28,18 @@ public class SongsStoreServletTest {
     private MockServletConfig config;
     private MockHttpServletRequest request;
     private MockHttpServletResponse response;
-    private 	ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
     
     @Before
     public void setUp() throws ServletException {
-    		objectMapper = new ObjectMapper();
+        objectMapper = new ObjectMapper();
+
+        servlet = new SongsStoreServlet();
+        request = new MockHttpServletRequest();
+        response = new MockHttpServletResponse();
+        config = new MockServletConfig();
+        config.addInitParameter("filename", "testSongs.json");
+        servlet.init(config); //throws ServletException
     }
     
     @SuppressWarnings("unchecked")
@@ -62,15 +71,118 @@ public class SongsStoreServletTest {
         assertEquals(song.getArtist(), newSong.getArtist());
     }
     
-    //@Test
+    @Test
     public void initShouldLoadSongList() {
+        ConcurrentHashMap<Integer,Song> songStore = new ConcurrentHashMap<Integer, Song>();
+        List<Song> songList;
+        objectMapper = new ObjectMapper();
+        InputStream input = this.getClass().getClassLoader().getResourceAsStream("testSongs.json");
+        try {
+            //read json into list
+            songList = objectMapper.readValue(input, new TypeReference<List<Song>>() {
+            });
+
+            assertTrue(songList.size() != 0);
+            //songList.contains()
+
+        } catch (IOException e) {
+            System.out.println("could not read json file");
+        }
     }
 
-	//@Test
-    public void doGetShouldxxx() {
+
+
+	@Test
+    public void doGetAllShouldReturnAllSongs() throws ServletException, IOException {
+        request.setParameter("all");
+        servlet.doGet(request, response);
+
+        List<Song> songList = (List<Song>) objectMapper.readValue(response.getContentAsByteArray(), new TypeReference<List<Song>>() {
+        });
+
+        //assert with testSongList
     }
+
+    @Test
+    public void doGetSpecificIdShouldReturnOneSong() throws ServletException, IOException {
+        request.setParameter("songId", "2");
+        servlet.doGet(request, response);
+
+        Song mySong = (Song) objectMapper.readValue(response.getContentAsByteArray(), new TypeReference<Song>() {
+        });
+
+        Song expected = new Song(2,"Mom","Meghan Trainor, Kelli Trainor","Thank You",2016);
+        Assert.assertTrue(mySong.equals(expected));
+    }
+
+    @Test
+    public void doGetMissingIdShouldReturnErrorMessage() throws ServletException, IOException {
+        request.setParameter("songId", "-1");
+        servlet.doGet(request, response);
+
+        String expectedResponseMessage = "Unfortunately we could not find your song.";
+
+        Assert.assertTrue(response.getContentAsString().contains(expectedResponseMessage));
+    }
+
+    @Test
+    public void doGetNoIdShouldReturnErrorMessage() throws ServletException, IOException {
+        request.setParameter("songId", "");
+        servlet.doGet(request, response);
+
+        String expectedResponseMessage = "Your Parameter \"songId\" did not contain an Id.";
+
+        Assert.assertTrue(response.getContentAsString().contains(expectedResponseMessage));
+    }
+
+
     
-    //@Test
-    public void doPostShouldxxx() {      
+    @Test
+    public void doPostShouldSetNewEntry() throws ServletException, IOException {
+        //give test json as input
+        InputStream input = this.getClass().getClassLoader().getResourceAsStream("testSong.json");
+        Song mySong = objectMapper.readValue(input, new TypeReference<Song>() {
+        });
+        request.setContent(objectMapper.writeValueAsBytes(mySong));
+
+        servlet.doPost(request, response);
+
+        //is this sufficiently as test?
+        String responseString = response.getContentAsString();
+        Assert.assertTrue(responseString.contains("Added Song"));
+        Assert.assertTrue(responseString.contains("OMG"));
+
+        //we could also doGet to get total songList and then check if that list contains the new added song
+
+    }
+
+    @Test
+    public void doPostWithEmptyValueShouldReturnErrorMessage() throws ServletException, IOException {
+        InputStream input = this.getClass().getClassLoader().getResourceAsStream("testSongWithEmptyValue.json");
+        Song mySong = objectMapper.readValue(input, new TypeReference<Song>() {
+        });
+        request.setContent(objectMapper.writeValueAsBytes(mySong));
+
+        servlet.doPost(request, response);
+
+        //is this sufficiently as test?
+        String expectedResponseString = "One or more of your song attributes were empty.";
+        String responseString = response.getContentAsString();
+        Assert.assertTrue(responseString.contains(expectedResponseString));
+    }
+
+    @Test
+    public void doPostWithMissingAttributeShouldReturnErrorMessage() throws ServletException, IOException {
+        InputStream input = this.getClass().getClassLoader().getResourceAsStream("testSongMissingAttribute.json");
+        Song mySong = objectMapper.readValue(input, new TypeReference<Song>() {
+        });
+        request.setContent(objectMapper.writeValueAsBytes(mySong));
+
+        servlet.doPost(request, response);
+
+        //is this sufficiently as test?
+        String expectedResponseString = "You did not gave all the necessary information for your song.";
+        String responseString = response.getContentAsString();
+        Assert.assertTrue(responseString.contains(expectedResponseString));
     }
 }
