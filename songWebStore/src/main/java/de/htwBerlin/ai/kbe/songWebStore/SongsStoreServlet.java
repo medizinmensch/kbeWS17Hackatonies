@@ -87,7 +87,7 @@ public class SongsStoreServlet extends HttpServlet {
 		StringBuilder responseStr = new StringBuilder("");
 		// alle Parameter (keys)
 		Enumeration<String> paramNames = request.getParameterNames();
-		
+
 		String param;
 		String paramValue;
 		while (paramNames.hasMoreElements()) {

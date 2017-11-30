@@ -91,7 +91,7 @@ public class SongsStoreServletTest {
     }
 
 
-
+    @SuppressWarnings("unchecked")
 	@Test
     public void doGetAllShouldReturnAllSongs() throws ServletException, IOException {
         request.setParameter("all");
