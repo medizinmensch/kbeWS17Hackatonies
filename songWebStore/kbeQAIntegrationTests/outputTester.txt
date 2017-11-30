@@ -1,0 +1,157 @@
+--- REQUESTING ALL SONGS ------------
+[ {
+  "id" : 1,
+  "title" : "Can?t Stop the Feeling",
+  "artist" : "Justin Timberlake",
+  "album" : "Trolls",
+  "released" : 2016
+}, {
+  "id" : 2,
+  "title" : "Mom",
+  "artist" : "Meghan Trainor, Kelli Trainor",
+  "album" : "Thank You",
+  "released" : 2016
+}, {
+  "id" : 3,
+  "title" : "Team",
+  "artist" : "Iggy Azalea",
+  "album" : null,
+  "released" : 2016
+}, {
+  "id" : 4,
+  "title" : "Ghostbusters (I'm not a fraid)",
+  "artist" : "Fall Out Boy, Missy Elliott",
+  "album" : "Ghostbusters",
+  "released" : 2016
+}, {
+  "id" : 5,
+  "title" : "Bad Things",
+  "artist" : "Camila Cabello, Machine Gun Kelly",
+  "album" : "Bloom",
+  "released" : 2017
+}, {
+  "id" : 6,
+  "title" : "I Took a Pill in Ibiza",
+  "artist" : "Mike Posner",
+  "album" : "At Night, Alone.",
+  "released" : 2016
+}, {
+  "id" : 7,
+  "title" : "i hate u, i love u",
+  "artist" : "Gnash",
+  "album" : "Top Hits 2017",
+  "released" : 2017
+}, {
+  "id" : 8,
+  "title" : "No",
+  "artist" : "Meghan Trainor",
+  "album" : "Thank You",
+  "released" : 2016
+}, {
+  "id" : 9,
+  "title" : "Private Show",
+  "artist" : "Britney Spears",
+  "album" : "Glory",
+  "released" : 2016
+}, {
+  "id" : 10,
+  "title" : "7 Years",
+  "artist" : "Lukas Graham",
+  "album" : "Lukas Graham (Blue Album)",
+  "released" : 2015
+} ]
+ 
+-------------------------------------------------------------------------------------------------
+--- REQUESTING SONG NUMBER 7 --------
+{
+  "id" : 7,
+  "title" : "i hate u, i love u",
+  "artist" : "Gnash",
+  "album" : "Top Hits 2017",
+  "released" : 2017
+}
+=  
+-------------------------------------------------------------------------------------------------
+--- POSTING A SONG ------------------
+Added Song "777 Years" to Database with Id: 11
+=  
+-------------------------------------------------------------------------------------------------
+--- REQUESTING THE NEW SONG NUMBER --
+{
+  "id" : 11,
+  "title" : "777 Years",
+  "artist" : "Lukas 777",
+  "album" : "Lukas 777 (Album Seven)",
+  "released" : 2017
+}
+=  
+-------------------------------------------------------------------------------------------------
+--- POSTING ANOTHER SONG ------------
+Added Song "888 Years" to Database with Id: 12
+=  
+-------------------------------------------------------------------------------------------------
+--- BAD USER REQUESTS ---------------
+--- GET WITH NON-EXISTING ID ---------------
+Unfortunately we could not find your song.
+Our Database contains Songs until Id: 12
+
+But what about this song?:
+
+{
+  "id" : 0,
+  "title" : "Shivaya",
+  "artist" : "Spirit Architect",
+  "album" : "Moonshine",
+  "released" : 2017
+}
+=  
+-------------------------------------------------------------------------------------------------
+--- GET WITH BAD ID ---------------
+<!doctype html><html lang="en"><head><title>HTTP Status 500 – Internal Server Error</title><style type="text/css">h1 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:22px;} h2 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:16px;} h3 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:14px;} body {font-family:Tahoma,Arial,sans-serif;color:black;background-color:white;} b {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;} p {font-family:Tahoma,Arial,sans-serif;background:white;color:black;font-size:12px;} a {color:black;} a.name {color:black;} .line {height:1px;background-color:#525D76;border:none;}</style></head><body><h1>HTTP Status 500 – Internal Server Error</h1><hr class="line" /><p><b>Type</b> Exception Report</p><p><b>Message</b> For input string: &quot;notANumber&quot;</p><p><b>Description</b> The server encountered an unexpected condition that prevented it from fulfilling the request.</p><p><b>Exception</b></p><pre>java.lang.NumberFormatException: For input string: &quot;notANumber&quot;
+	java.lang.NumberFormatException.forInputString(NumberFormatException.java:65)
+	java.lang.Integer.parseInt(Integer.java:580)
+	java.lang.Integer.parseInt(Integer.java:615)
+	de.htwBerlin.ai.kbe.songWebStore.SongsStoreServlet.doGet(SongsStoreServlet.java:108)
+	javax.servlet.http.HttpServlet.service(HttpServlet.java:635)
+	javax.servlet.http.HttpServlet.service(HttpServlet.java:742)
+	org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:52)
+</pre><p><b>Note</b> The full stack trace of the root cause is available in the server logs.</p><hr class="line" /><h3>Apache Tomcat/8.5.23</h3></body></html>=  
+-------------------------------------------------------------------------------------------------
+--- GET WITH NO PARAM ---------------
+
+=  
+-------------------------------------------------------------------------------------------------
+--- POSTING A NON-JSON LOVE SONG ----
+<!doctype html><html lang="en"><head><title>HTTP Status 500 – Internal Server Error</title><style type="text/css">h1 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:22px;} h2 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:16px;} h3 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:14px;} body {font-family:Tahoma,Arial,sans-serif;color:black;background-color:white;} b {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;} p {font-family:Tahoma,Arial,sans-serif;background:white;color:black;font-size:12px;} a {color:black;} a.name {color:black;} .line {height:1px;background-color:#525D76;border:none;}</style></head><body><h1>HTTP Status 500 – Internal Server Error</h1><hr class="line" /><p><b>Type</b> Exception Report</p><p><b>Message</b> Unrecognized token 'This': was expecting ('true', 'false' or 'null')</p><p><b>Description</b> The server encountered an unexpected condition that prevented it from fulfilling the request.</p><p><b>Exception</b></p><pre>com.fasterxml.jackson.core.JsonParseException: Unrecognized token 'This': was expecting ('true', 'false' or 'null')
+ at [Source: (org.apache.catalina.connector.CoyoteInputStream); line: 1, column: 6]
+	com.fasterxml.jackson.core.JsonParser._constructError(JsonParser.java:1798)
+	com.fasterxml.jackson.core.base.ParserMinimalBase._reportError(ParserMinimalBase.java:673)
+	com.fasterxml.jackson.core.json.UTF8StreamJsonParser._reportInvalidToken(UTF8StreamJsonParser.java:3527)
+	com.fasterxml.jackson.core.json.UTF8StreamJsonParser._handleUnexpectedValue(UTF8StreamJsonParser.java:2622)
+	com.fasterxml.jackson.core.json.UTF8StreamJsonParser._nextTokenNotInObject(UTF8StreamJsonParser.java:826)
+	com.fasterxml.jackson.core.json.UTF8StreamJsonParser.nextToken(UTF8StreamJsonParser.java:723)
+	com.fasterxml.jackson.databind.ObjectMapper._initForReading(ObjectMapper.java:4129)
+	com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:3988)
+	com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3065)
+	de.htwBerlin.ai.kbe.songWebStore.SongsStoreServlet.doPost(SongsStoreServlet.java:141)
+	javax.servlet.http.HttpServlet.service(HttpServlet.java:661)
+	javax.servlet.http.HttpServlet.service(HttpServlet.java:742)
+	org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:52)
+</pre><p><b>Note</b> The full stack trace of the root cause is available in the server logs.</p><hr class="line" /><h3>Apache Tomcat/8.5.23</h3></body></html>=  
+-------------------------------------------------------------------------------------------------
+--- POSTING AN EMPTY FILE -----------
+<!doctype html><html lang="en"><head><title>HTTP Status 500 – Internal Server Error</title><style type="text/css">h1 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:22px;} h2 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:16px;} h3 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:14px;} body {font-family:Tahoma,Arial,sans-serif;color:black;background-color:white;} b {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;} p {font-family:Tahoma,Arial,sans-serif;background:white;color:black;font-size:12px;} a {color:black;} a.name {color:black;} .line {height:1px;background-color:#525D76;border:none;}</style></head><body><h1>HTTP Status 500 – Internal Server Error</h1><hr class="line" /><p><b>Type</b> Exception Report</p><p><b>Message</b> No content to map due to end-of-input</p><p><b>Description</b> The server encountered an unexpected condition that prevented it from fulfilling the request.</p><p><b>Exception</b></p><pre>com.fasterxml.jackson.databind.exc.MismatchedInputException: No content to map due to end-of-input
+ at [Source: (org.apache.catalina.connector.CoyoteInputStream); line: 1, column: 0]
+	com.fasterxml.jackson.databind.exc.MismatchedInputException.from(MismatchedInputException.java:59)
+	com.fasterxml.jackson.databind.ObjectMapper._initForReading(ObjectMapper.java:4133)
+	com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:3988)
+	com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3065)
+	de.htwBerlin.ai.kbe.songWebStore.SongsStoreServlet.doPost(SongsStoreServlet.java:141)
+	javax.servlet.http.HttpServlet.service(HttpServlet.java:661)
+	javax.servlet.http.HttpServlet.service(HttpServlet.java:742)
+	org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:52)
+</pre><p><b>Note</b> The full stack trace of the root cause is available in the server logs.</p><hr class="line" /><h3>Apache Tomcat/8.5.23</h3></body></html>=  
+-------------------------------------------------------------------------------------------------
+--- SHUTTING DOWN TOMCAT -----------
+NUMBER OF SONGS IN DB-FILE: 
+0
