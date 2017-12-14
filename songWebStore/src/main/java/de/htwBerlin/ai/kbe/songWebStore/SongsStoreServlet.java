@@ -100,7 +100,7 @@ public class SongsStoreServlet extends HttpServlet {
 			else {
 				if (param.equals("all")) {
 					responseStr.append(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(songStore.values()));
-					response.setHeader("Accept", APPLICATION_JSON);
+					response.setHeader("Content-Type", APPLICATION_JSON);
 					break;
 				}
 				else if (param.equals("songId")) {
@@ -112,7 +112,7 @@ public class SongsStoreServlet extends HttpServlet {
 						try {
 							int paramValueInt = Integer.parseInt(paramValue);
 							if (songStore.containsKey(paramValueInt)) {
-								response.setHeader("Accept", APPLICATION_JSON);
+								response.setHeader("Content-Type", APPLICATION_JSON);
 								Song mySong = (Song) songStore.get(paramValueInt);
 								System.out.println(mySong.getId() + ", " + mySong.getTitle());
 								responseStr.append(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(mySong));
