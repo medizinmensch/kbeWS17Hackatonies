@@ -1,6 +1,6 @@
-package storage;
+package de.htwBerlin.ai.kbe.songsRx.storage;
 
-import beans.Song;
+import de.htwBerlin.ai.kbe.songsRx.beans.Song;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

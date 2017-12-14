@@ -1,7 +1,7 @@
-package services;
+package de.htwBerlin.ai.kbe.songsRx.services;
 
-import beans.Song;
-import storage.SongStorage;
+import de.htwBerlin.ai.kbe.songsRx.beans.Song;
+import de.htwBerlin.ai.kbe.songsRx.storage.SongStorage;
 
 import java.util.Collection;
 

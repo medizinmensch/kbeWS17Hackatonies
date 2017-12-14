@@ -1,4 +1,4 @@
-package beans;
+package de.htwBerlin.ai.kbe.songsRx.beans;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
