@@ -57,7 +57,6 @@ public class SongStorage {
 	
 	public Integer addSong(Song song) {
 		song.setId(currentId.incrementAndGet());
-		System.out.println("joo");
 		storage.put(song.getId(), song);
 		return song.getId();
 	}
@@ -66,13 +65,21 @@ public class SongStorage {
 	// returns false, when contact does not exist in map
 	public boolean updateSong(Song newSong, int newId) {
 		Song oldSong = storage.get(newId);
-		newSong.setId(newId);
-		return storage.replace(newId, oldSong, newSong);
+		if (oldSong != null) {
+			newSong.setId(newId);
+			return storage.replace(newId, oldSong, newSong);
+		}
+		// id does not exist
+		else
+			return false;
+
+
 	}
 	
 	// returns deleted song. why return? just give true for success
 	public boolean deleteSong(Integer id) {
-		if (storage.remove(id) != null)
+		Song deletedSong = storage.remove(id);
+		if (deletedSong != null)
 			return true;
 		return false;
 	}
