@@ -17,3 +17,22 @@ curl -X PUT \
      -v "http://localhost:8080/songsRX/rest/songs/10"
 echo " "
 echo "-------------------------------------------------------------------------------------------------"
+
+echo "--- PUTTING A SONG ------------------"
+curl -X PUT \
+     -H "Content-Type: text/plain" \
+     -H "Accept: text/plain" \
+     -d "bla" \
+     -v "http://localhost:8080/songsRX/rest/songs/10"
+echo " "
+echo "-------------------------------------------------------------------------------------------------"
+
+echo "--- PUTTING A SONG ------------------"
+curl -X PUT \
+     -H "Content-Type: application/json" \
+     -H "Accept: text/plain" \
+     -d "bla" \
+     -v "http://localhost:8080/songsRX/rest/songs/10"
+echo " "
+echo "-------------------------------------------------------------------------------------------------"
+

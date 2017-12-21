@@ -16,14 +16,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-
-//7 units tests für put (5): jeweils für json und xml 204 & 404 und delete, id existiert nicht
-// delete(2): (204 und 404)
-//id existiert nicht in db -> 404
-    /* wenn id nicht übereinstimmt die aus der url nehmen, nicht id die aus der payload kommt -> id in der payload ändern
-
-    */
-
 @Path("/songs")
 public class WebService {
 

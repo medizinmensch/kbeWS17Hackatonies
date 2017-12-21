@@ -68,14 +68,21 @@ public class WebServiceTest extends JerseyTest {
     //test does not work with jersey test. if we test with curl it works.
     @Ignore
     @Test
-    public void doPutUpdateSongWithInvalidFormatShouldReturn400() {
+    public void doPutUpdateSongWithInvalidNotSupportedTypeShouldReturn415() {
     	Song mySong = new Song(1, "Title", "artist", "album", 2000);
-    	System.out.println("1");
         Response output = target("/songs/73")
                 .request()
                 .put(Entity.entity(mySong, MediaType.TEXT_HTML));
-        System.out.println("2");
         assertEquals(415, output.getStatus());
+    }
+
+    @Test
+    public void doPutUpdateSongWithInvalidFormatShouldReturn400() {
+        Song mySong = new Song(1, "Title", "artist", "album", 2000);
+        Response output = target("/songs/73")
+                .request()
+                .put(Entity.entity("efhfeh", MediaType.APPLICATION_JSON));
+        assertEquals(400, output.getStatus());
     }
 
     // PUT MISC
