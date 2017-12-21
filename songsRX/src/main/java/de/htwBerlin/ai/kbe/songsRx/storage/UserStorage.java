@@ -50,7 +50,7 @@ public class UserStorage {
 		return instance;
 	}
 	
-	public User getUser(Integer id) {
+	public User getUser(String id) {
 		return storage.get(id);
 	}
 	

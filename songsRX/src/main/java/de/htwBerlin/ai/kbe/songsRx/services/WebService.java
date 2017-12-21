@@ -50,7 +50,6 @@ public class WebService {
             int id = SongStorage.getInstance().addSong(song);
             return Response.status(Response.Status.CREATED).entity(id).build();
         }
-
     }
 
     @PUT

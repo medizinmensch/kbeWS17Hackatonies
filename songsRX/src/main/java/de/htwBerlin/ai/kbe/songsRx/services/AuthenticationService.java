@@ -21,7 +21,7 @@ public class AuthenticationService { // schaut in die Map, (injiziertes POJO (is
         User user = UserStorage.getInstance().getUser(userId);
         
         
-        
+        	
         if (user != null) {
             // tokengenerierung + Rückgabe
         	// filter Singelton + dependency invjection
