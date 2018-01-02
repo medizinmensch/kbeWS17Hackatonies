@@ -1,5 +1,6 @@
 package de.htwBerlin.ai.kbe.songsRx.services;
 
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -9,28 +10,41 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import de.htwBerlin.ai.kbe.songsRx.beans.User;
+import de.htwBerlin.ai.kbe.songsRx.storage.IToken;
 import de.htwBerlin.ai.kbe.songsRx.storage.UserStorage;
 
+import java.util.Map;
+
 @Path("/auth")
-public class AuthenticationService { // schaut in die Map, (injiziertes POJO (ist leer beim ersten Req)) legt den Token an
-	
+public class AuthenticationService { // schaut in die Map, (injiziertes POJO (ist leer beim ersten Req(->Singleton.class in den DependencyBinder?))) legt den Token an
+
+
+    // filter Singleton + dependency injection
+    //
+
+    private IToken token;
+
+    @Inject
+    public AuthenticationService(IToken actualToken){
+        token = actualToken;
+    }
+
     @GET
     //@QueryParam("userId")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    @Produces({MediaType.TEXT_PLAIN})
     public Response getUserToken(@QueryParam("userId") String userId) {
-        User user = UserStorage.getInstance().getUser(userId);
-        
-        
-        	
-        if (user != null) {
-            // tokengenerierung + Rückgabe
-        	// filter Singelton + dependency invjection
-        	// klasse guckt sich header an und lässt in den club oder nicht
-        	// instgesammt 
-        	// token in hashmap pumpen
-        	return Response.status(Response.Status.OK).build();
-        } else {
-            return Response.status(Response.Status.FORBIDDEN).build();
+        if (userId.equals("")) {
+            Response.status(Response.Status.BAD_REQUEST).build();
         }
-        }
+
+        String token = token.get(); //das ist noch ein problem - weiß nich nicht wie wir das lösen könnten.
+        // token already exists, what do to here? i guess: give token back
+        return Response.status(Response.Status.OK).entity(token).build();
+
+        //generate
+        // klasse guckt sich header an und lässt in den club oder nicht
+        // instgesammt
+        // token zu hashmap adden
+
+    }
 }

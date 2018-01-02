@@ -1,4 +1,4 @@
-package de.htwBerlin.ai.kbe.SongsRx.models;
+package de.htwBerlin.ai.kbe.songsRx.models;
 
 import java.io.IOException;
 import java.util.Map;
@@ -13,7 +13,7 @@ import de.htwBerlin.ai.kbe.songsRx.beans.User;
 
 @Provider
 @PreMatching
-public class Filter implements ContainerRequestFilter{
+public class Filter extends Servlet {
 	
 	//Hashmap einlesen
 	private static Map<String, String> tokens;

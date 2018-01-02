@@ -16,6 +16,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+
+// servletfilter, der authentication header prüft
 @Path("/songs")
 public class WebService {
 
