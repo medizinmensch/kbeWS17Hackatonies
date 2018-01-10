@@ -23,7 +23,7 @@ public class UserStorage {
 	private UserStorage() {
 		storage = new HashMap<Integer,User>();
 
-		String jsonFile = "user.json"; //TODO
+		String jsonFile = "users.json";
 		ObjectMapper objectMapper = new ObjectMapper();
 		InputStream input = this.getClass().getClassLoader().getResourceAsStream(jsonFile);
 
@@ -97,6 +97,14 @@ public class UserStorage {
 			}
 		}
 		return max;
+	}
+
+	public boolean userExists(String userId) {
+		for(User user: storage.values()) {
+			if (user.getUserId().equals(userId))
+				return true;
+		}
+		return false;
 	}
 	
 }

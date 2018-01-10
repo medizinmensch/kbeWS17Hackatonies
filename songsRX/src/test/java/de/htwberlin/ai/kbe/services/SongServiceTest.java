@@ -13,10 +13,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import de.htwBerlin.ai.kbe.songsRx.beans.Song;
-import de.htwBerlin.ai.kbe.songsRx.beans.Song.Builder;
-import de.htwBerlin.ai.kbe.songsRx.services.WebService;
-
-import java.awt.*;
+import de.htwBerlin.ai.kbe.songsRx.services.SongService;
 
 /* 
  * 7 units tests für put (5): jeweils für json und xml 204 & 404 und delete, id existiert nicht
@@ -26,11 +23,11 @@ import java.awt.*;
  */
 
 
-public class WebServiceTest extends JerseyTest {
+public class SongServiceTest extends JerseyTest {
 
     @Override
     protected javax.ws.rs.core.Application configure() {
-        return new ResourceConfig(WebService.class);
+        return new ResourceConfig(SongService.class);
     }
 
     

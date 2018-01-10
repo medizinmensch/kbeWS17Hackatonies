@@ -16,7 +16,7 @@ public class SongStorage {
 	private static AtomicInteger currentId;
 	
 	private SongStorage() {
-		storage = new HashMap<Integer,Song>();
+		storage = new HashMap<Integer, Song>();
 
 		String jsonFile = "songs.json";
 		ObjectMapper objectMapper = new ObjectMapper();
