@@ -1,0 +1,27 @@
+{
+  "private": true, 
+  "songs": [
+    {
+      "album": "Lukas Graham (Blue Album)", 
+      "artist": "Lukas Graham", 
+      "id": 10, 
+      "released": 2015, 
+      "title": "7 Years"
+    }, 
+    {
+      "album": "Glory", 
+      "artist": "Britney Spears", 
+      "id": 9, 
+      "released": 2016, 
+      "title": "Private Show"
+    }, 
+    {
+      "album": "Thank You", 
+      "artist": "Meghan Trainor", 
+      "id": 28, 
+      "released": 2016, 
+      "title": "No"
+    }
+  ], 
+  "userId": "osailer"
+}

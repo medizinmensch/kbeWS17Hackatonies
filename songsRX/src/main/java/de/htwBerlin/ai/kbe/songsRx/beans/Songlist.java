@@ -15,4 +15,5 @@ public class Songlist {
 	Listing listing;
 	private String name;
 	private List<Song> songs;
+	private User userId;
 }

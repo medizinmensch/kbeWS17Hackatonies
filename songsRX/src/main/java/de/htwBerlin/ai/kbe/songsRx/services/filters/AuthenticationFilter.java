@@ -16,14 +16,10 @@ import javax.ws.rs.ext.Provider;
 @Provider
 public class AuthenticationFilter implements ContainerRequestFilter {
 
+    @Inject
     private IAuthenticator authenticator;
 
     private static final String AUTHENTICATION_HEADER = "Authorization";
-
-    @Inject
-    AuthenticationFilter(IAuthenticator authenticator) {
-        this.authenticator = authenticator;
-    }
 
 	@Override
 	public void filter(ContainerRequestContext containerRequest) throws WebApplicationException {

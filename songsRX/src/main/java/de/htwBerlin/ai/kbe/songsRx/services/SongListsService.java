@@ -1,21 +1,80 @@
 package de.htwBerlin.ai.kbe.songsRx.services;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import de.htwBerlin.ai.kbe.songsRx.auth.IAuthenticator;
 
-@Path("/userId/{someUserId}/songLists/{someSongListId}")
+import javax.inject.Inject;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
+
+@Path("/userId/{userId}/songLists")
 public class SongListsService {
+
+
+    @Inject
+    private IAuthenticator authenticator;
+
+    @Context
+    HttpHeaders headers;
+
 
     @GET
     @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-    public Response getSong(@PathParam("someUserId") Integer id, @PathParam("someSongListId") Integer id2 ) {
-        if (id == 2 && id2 == 3 )
-            return Response.ok().build();
-        else
-            return Response.status(Response.Status.NOT_FOUND).build();
+    public Response getAllSonglists(@PathParam("userId") String userId) {
+        String authToken = headers.getRequestHeader("Authorization").get(0);
+
+        if (authenticator.hasOwnerPrivileges(userId, authToken)) {
+            //return public & private playlists
+            //Response.ok(songDao.getPlaylist())
+            return Response.ok("public & private").build();
+        } else {
+            //return only public playlists
+            return Response.ok("public").build();
+        }
     }
+
+    @GET
+    @Path("/{songListId}")
+    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    public Response getSingleSonglist(@PathParam("userId") String userId, @PathParam("songListId") Integer songListId) {
+        String authToken = headers.getRequestHeader("Authorization").get(0);
+
+        //if songlist private
+        boolean isPrivate = true;
+        if (isPrivate && authenticator.hasOwnerPrivileges(userId, authToken)) {
+            //return private playlist
+        } else {
+            //return playlist
+        }
+        return Response.ok().build();
+    }
+
+
+    @POST
+    @Produces({MediaType.TEXT_PLAIN})
+    public Response createSongList(@PathParam("userId") String userId) {
+        String authToken = headers.getRequestHeader("Authorization").get(0);
+
+        //only create playlist if userId from url matches userId from authToken
+        if (authenticator.hasOwnerPrivileges(userId, authToken)) {
+            //create playlist, songlist id gets created from dao
+            return Response.ok().build();
+        } else {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+    }
+
+    @DELETE
+    @Path("/{songListId}")
+    public Response deletePlaylist(@PathParam("userId") String userId, @PathParam("songListId") Integer songListId) {
+        String authToken = headers.getRequestHeader("Authorization").get(0);
+
+        //only delete playlist if userId from url matches userId from authToken
+        if (authenticator.hasOwnerPrivileges(userId, authToken)) {
+            //delete playlist
+            return Response.ok().build();
+        } else {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+    }
+
 }
