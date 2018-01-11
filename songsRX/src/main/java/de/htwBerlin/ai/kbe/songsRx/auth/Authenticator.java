@@ -18,9 +18,8 @@ public class Authenticator implements IAuthenticator {
 
         //generate token
         SecureRandom random = new SecureRandom();
-        byte bytes[] = new byte[20];
-        random.nextBytes(bytes);
-        token = bytes.toString();
+        long longToken = Math.abs( random.nextLong() );
+        token = Long.toString( longToken, 16 );
 
         //add to hashmap
         tokenList.put(userId, token);

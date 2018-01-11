@@ -31,9 +31,10 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         String authToken = containerRequest.getHeaderString(AUTHENTICATION_HEADER);
 
         if (authToken == null) {
-            // etwas zu einfach: wenn "auth" in der URL, dann durchlassen:
+            // etwas zu einfach: wenn "auth" in der URL, dann durchlassen
+            // sonst zugang verbieten, da keine authorization mitgeschickt wurde
             if (!containerRequest.getUriInfo().getPath().contains("auth")) { //kein "auth"
-                throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+                throw new WebApplicationException(Response.Status.FORBIDDEN);
             }
         } else if (authToken.equals("")) {
             throw new WebApplicationException(Response.Status.BAD_REQUEST);

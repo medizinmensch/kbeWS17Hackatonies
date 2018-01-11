@@ -34,7 +34,8 @@ public class AuthenticationService { // schaut in die Map, (injiziertes POJO (is
             return Response.status(Response.Status.OK).entity((token)).build();
         }
 
-        return Response.status(Response.Status.BAD_REQUEST).build();
+        //user does not exist
+        return Response.status(Response.Status.FORBIDDEN).build();
 
     }
 }
