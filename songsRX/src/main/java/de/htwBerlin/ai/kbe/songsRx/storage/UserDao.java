@@ -21,9 +21,9 @@ public class UserDao implements IUserDao {
 	public User getUser(String userId) {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
+	}user.getSonglists.setOwner(user); 
+	user.getSonglists.setOwner(user); 
+	@Overrideuser.getSonglists.setOwner(user); 
 	public Collection<User> getAllUsers() {
 		EntityManager em = emf.createEntityManager();
         try {
