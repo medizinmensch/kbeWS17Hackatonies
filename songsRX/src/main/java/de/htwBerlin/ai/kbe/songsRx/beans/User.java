@@ -1,16 +1,27 @@
 package de.htwBerlin.ai.kbe.songsRx.beans;
 
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "user")
 public class User {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String userId;
 	private String lastName;
 	private String firstName;
+	
+	@OneToMany(mappedBy="songs", cascade=CascadeType.ALL, orphanRemoval=true) //?? TODO: noch richti stellen
+	private Set<Songlist> songlists;
 	
 	public User(Integer id, String userId, String lastName, String firstName) {
 		super();

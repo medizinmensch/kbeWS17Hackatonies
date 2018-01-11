@@ -73,7 +73,6 @@ public class SongStorage {
 		else
 			return false;
 
-
 	}
 	
 	// returns deleted song. why return? just give true for success
