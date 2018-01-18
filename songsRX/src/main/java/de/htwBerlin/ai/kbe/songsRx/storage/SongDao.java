@@ -7,6 +7,12 @@ import de.htwBerlin.ai.kbe.songsRx.beans.Song;
 public class SongDao implements ISongDao {
 
 	@Override
+	public Integer createSong(Song song) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
 	public Song getSong(Integer id) {
 		// TODO Auto-generated method stub
 		return null;
@@ -19,9 +25,9 @@ public class SongDao implements ISongDao {
 	}
 
 	@Override
-	public int addSong(Song song) {
+	public boolean updateSong() {
 		// TODO Auto-generated method stub
-		return 0;
+		return false;
 	}
 
 	@Override

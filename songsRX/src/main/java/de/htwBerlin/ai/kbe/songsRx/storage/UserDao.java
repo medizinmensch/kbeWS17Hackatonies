@@ -35,7 +35,7 @@ public class UserDao  {
 	}
 
 	@Override
-	public Integer addUser(User user) {
+	public Integer createUser(User user) {
 		EntityManager em = emf.createEntityManager();
 		
 		EntityTransaction transaction = em.getTransaction();

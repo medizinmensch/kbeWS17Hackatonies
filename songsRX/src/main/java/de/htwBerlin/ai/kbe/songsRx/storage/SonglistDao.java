@@ -10,14 +10,14 @@ import de.htwBerlin.ai.kbe.songsRx.beans.Songlist;
 
 public class SonglistDao implements ISonglistDao {
 
+
 	@Inject
 	private EntityManagerFactory emf;
-	
-	
+
 	@Override
-	public Collection<Songlist> getAllSonglistsOfUser(String userId) {
+	public Integer createNewSongListOfUser(String userId) {
 		// TODO Auto-generated method stub
-		return null;
+		return 0;
 	}
 
 	@Override
@@ -27,15 +27,27 @@ public class SonglistDao implements ISonglistDao {
 	}
 
 	@Override
-	public int createNewSongListOfUser(String userId) {
+	public Collection<Songlist> getAllPublicSonglistsOfUser(String userId) {
 		// TODO Auto-generated method stub
-		return 0;
+		return null;
 	}
 
 	@Override
-	public void deleteSonglistOfUser(String userId) {
+	public Collection<Songlist> getAllSonglistsOfUser(String userId) {
 		// TODO Auto-generated method stub
-		
+		return null;
+	}
+
+	@Override
+	public boolean updateSongListOfUser(String userId, Integer songlistId) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean deleteSonglistOfUser(String userId, Integer songlistId) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
