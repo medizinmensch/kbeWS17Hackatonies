@@ -11,9 +11,9 @@ import javax.persistence.TypedQuery;
 
 
 import de.htwBerlin.ai.kbe.songsRx.beans.User;
-
-public class UserDao implements IUserDao {
-
+//implements IUserDao
+public class UserDao  {
+	/*
 	@Inject
 	EntityManagerFactory emf;
 	
@@ -70,5 +70,5 @@ public class UserDao implements IUserDao {
 		EntityManager em = emf.createEntityManager();
 		return false;
 	}
-
+	*/
 }

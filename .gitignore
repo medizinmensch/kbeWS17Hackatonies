@@ -6,3 +6,4 @@ bin/
 .idea
 .vscode
 .gitignore
+.DS_Store
