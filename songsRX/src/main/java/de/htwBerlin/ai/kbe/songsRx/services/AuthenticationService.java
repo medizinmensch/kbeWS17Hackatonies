@@ -10,6 +10,7 @@ import javax.ws.rs.core.Response;
 
 import de.htwBerlin.ai.kbe.songsRx.auth.IAuthenticator;
 import de.htwBerlin.ai.kbe.songsRx.beans.User;
+import de.htwBerlin.ai.kbe.songsRx.storage.IUserDao;
 import de.htwBerlin.ai.kbe.songsRx.storage.UserStorage;
 
 import java.util.Collection;
@@ -20,6 +21,9 @@ public class AuthenticationService { // schaut in die Map, (injiziertes POJO (is
 
     @Inject
     private IAuthenticator authenticator;
+
+    @Inject
+    private IUserDao userDao;
 
     @GET
     @Produces({MediaType.TEXT_PLAIN})

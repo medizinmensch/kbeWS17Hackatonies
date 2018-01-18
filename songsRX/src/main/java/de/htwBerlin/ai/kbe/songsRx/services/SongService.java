@@ -1,10 +1,12 @@
 package de.htwBerlin.ai.kbe.songsRx.services;
 
 import de.htwBerlin.ai.kbe.songsRx.beans.Song;
+import de.htwBerlin.ai.kbe.songsRx.storage.ISongDao;
 import de.htwBerlin.ai.kbe.songsRx.storage.SongStorage;
 
 import java.util.Collection;
 
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -16,21 +18,23 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-
 @Path("/songs")
 public class SongService {
+
+    @Inject
+    private ISongDao songDao;
 
     @GET
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Collection<Song> getAllSongs() {
-        return SongStorage.getInstance().getAllSongs();
+        return songDao.getAllSongs();
     }
 
     @GET
     @Path("/{id}")
     @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     public Response getSong(@PathParam("id") Integer id) {
-        Song song = SongStorage.getInstance().getSong(id);
+        Song song = songDao.getSong(id);
         if (song != null) {
             return Response.ok(song).build();
         } else {
@@ -48,7 +52,7 @@ public class SongService {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
         else {
-            int id = SongStorage.getInstance().addSong(song);
+            int id = songDao.createSong(song);
             return Response.status(Response.Status.CREATED).entity(id).build();
         }
     }
@@ -66,7 +70,7 @@ public class SongService {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
         else {
-            boolean success = SongStorage.getInstance().updateSong(song, id);
+            boolean success = songDao.updateSong(id, song);
             if (success)
                 return Response.status(Response.Status.NO_CONTENT).build();
             else
@@ -78,7 +82,7 @@ public class SongService {
     @DELETE
     @Path("/{id}")
     public Response delete(@PathParam("id") Integer id) {
-        boolean deleted = SongStorage.getInstance().deleteSong(id);
+        boolean deleted = songDao.deleteSong(id);
         if (deleted)
             return Response.status(Response.Status.NO_CONTENT).build();
         else

@@ -25,7 +25,7 @@ public class SongDao implements ISongDao {
 	}
 
 	@Override
-	public boolean updateSong() {
+	public boolean updateSong(Integer id, Song song) {
 		// TODO Auto-generated method stub
 		return false;
 	}

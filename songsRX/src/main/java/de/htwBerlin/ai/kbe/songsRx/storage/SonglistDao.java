@@ -15,7 +15,7 @@ public class SonglistDao implements ISonglistDao {
 	private EntityManagerFactory emf;
 
 	@Override
-	public Integer createNewSongListOfUser(String userId) {
+	public Integer createNewSongListOfUser(String userId, Collection<Song> songs) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -47,6 +47,11 @@ public class SonglistDao implements ISonglistDao {
 	@Override
 	public boolean deleteSonglistOfUser(String userId, Integer songlistId) {
 		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean songlistIsPrivate(Integer songlistId) {
 		return false;
 	}
 
