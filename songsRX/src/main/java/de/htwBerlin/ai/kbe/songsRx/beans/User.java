@@ -16,11 +16,12 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+
 	private String userId;
 	private String lastName;
 	private String firstName;
 	
-	@OneToMany(mappedBy="songs", cascade=CascadeType.ALL, orphanRemoval=true) //?? TODO: noch richti stellen
+	@OneToMany(mappedBy="user", cascade=CascadeType.ALL, orphanRemoval=true)
 	private Set<Songlist> songlists;
 	
 	public User(Integer id, String userId, String lastName, String firstName) {

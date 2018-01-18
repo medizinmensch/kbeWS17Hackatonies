@@ -5,9 +5,11 @@ import java.util.Collection;
 import de.htwBerlin.ai.kbe.songsRx.beans.User;
 
 public interface IUserDao {
+
+	public Integer createUser(User user);
 	public User getUser(String userId);
 	public Collection<User> getAllUsers();
-	public Integer addUser(User user);
-	public boolean deleteUser(Integer id);
+	public boolean updateUser(String userId);
+	public boolean deleteUser(String userId);
 	public boolean userExists(String userId);
 }

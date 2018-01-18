@@ -17,15 +17,12 @@ public class Song {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
+
 	private String title;
 	private String artist;
 	private String album;
 	private Integer released;
-	
-	@OneToMany
-    @JoinColumn(name = "contact_id")
-	private Songlist songlist;
 
 	public Song() {
 	}
