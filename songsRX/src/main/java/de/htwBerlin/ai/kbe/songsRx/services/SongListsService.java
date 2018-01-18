@@ -61,22 +61,50 @@ public class SongListsService {
 
     @POST
     @Produces({MediaType.TEXT_PLAIN})
-    public Response createSongList(@PathParam("userId") String userId, Collection<Song> songs) {
+    public Response createSongList(@PathParam("userId") String userId, @QueryParam("songlistName") String songlistName, @QueryParam("isPublic") boolean isPublic) {
         String authToken = headers.getRequestHeader("Authorization").get(0);
 
         //only create playlist if userId from url matches userId from authToken
         if (authenticator.hasOwnerPrivileges(userId, authToken)) {
             //create playlist, songlist id gets created from dao
-            Integer songlistId = songlistDao.createNewSongListOfUser(userId, songs);
+            Integer songlistId = songlistDao.createNewSongListOfUser(userId, songlistName, isPublic);
             return Response.ok(songlistId).build();
         } else {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
     }
 
+    //create post method to add song to playlist
+
     @PUT
     @Path("/{songListId}")
-    public Response.
+    public Response addSongsToSongList(@PathParam("userId") String userId, @PathParam("songListId") Integer songListId, Collection<Song> songs) {
+        String authToken = headers.getRequestHeader("Authorization").get(0);
+
+        //only update playlist if userId from url matches userId from authToken
+        if (authenticator.hasOwnerPrivileges(userId, authToken)) {
+            //add songs to song playlist
+            //boolean success = songlistDao.addSongsToSonglist(songListId, songs);
+            return Response.ok(false).build();
+        } else {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+    }
+
+    @PUT
+    @Path("/{songListId}/overwrite")
+    public Response updateSongList(@PathParam("userId") String userId, @PathParam("songListId") Integer songListId) {
+        String authToken = headers.getRequestHeader("Authorization").get(0);
+
+        //only update playlist if userId from url matches userId from authToken
+        if (authenticator.hasOwnerPrivileges(userId, authToken)) {
+            //update playlist
+            //boolean success = songlistDao.updateSongListOfUser(userId, songListId, songs);
+            return Response.ok(false).build();
+        } else {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+    }
 
     @DELETE
     @Path("/{songListId}")
@@ -86,7 +114,11 @@ public class SongListsService {
         //only delete playlist if userId from url matches userId from authToken
         if (authenticator.hasOwnerPrivileges(userId, authToken)) {
             //delete playlist
-            return Response.ok().build();
+            boolean success = songlistDao.deleteSonglistOfUser(userId, songListId);
+            if (success)
+                return Response.ok("Successfully deleted playlist with id:" + songListId).build();
+
+            return Response.status(Response.Status.NOT_FOUND).build();
         } else {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }

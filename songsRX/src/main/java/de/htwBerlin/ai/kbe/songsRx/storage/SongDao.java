@@ -4,24 +4,54 @@ import java.util.Collection;
 
 import de.htwBerlin.ai.kbe.songsRx.beans.Song;
 
+import javax.inject.Inject;
+import javax.persistence.*;
+
 public class SongDao implements ISongDao {
+
+    @Inject
+    EntityManagerFactory emf;
 
 	@Override
 	public Integer createSong(Song song) {
-		// TODO Auto-generated method stub
-		return 0;
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+        try {
+            transaction.begin();
+            em.persist(song);
+            transaction.commit();
+            return song.getId();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error adding song: " + e.getMessage());
+            transaction.rollback();
+            throw new PersistenceException("Could not persist entity: " + e.toString());
+        } finally {
+            em.close();
+        }
 	}
 
 	@Override
 	public Song getSong(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+        EntityManager em = emf.createEntityManager();
+        Song entity = null;
+        try {
+            entity = em.find(Song.class, id);
+        } finally {
+            em.close();
+        }
+        return entity;
 	}
 
 	@Override
 	public Collection<Song> getAllSongs() {
-		// TODO Auto-generated method stub
-		return null;
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Song> query = em.createQuery("SELECT s FROM Song s", Song.class);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
 	}
 
 	@Override
@@ -32,8 +62,26 @@ public class SongDao implements ISongDao {
 
 	@Override
 	public boolean deleteSong(Integer id) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+        Song song = null;
+        try {
+            song = em.find(Song.class, id);
+            if (song != null) {
+                System.out.println("Deleting: " + song.getId());
+                transaction.begin();
+                em.remove(song);
+                transaction.commit();
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error removing song: " + e.getMessage());
+            transaction.rollback();
+            throw new PersistenceException("Could not remove entity: " + e.toString());
+        } finally {
+            em.close();
+        }
+        return false;
+    }
 }
