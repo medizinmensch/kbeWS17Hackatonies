@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,6 +12,7 @@ import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "user")
+@Entity
 public class User {
 	
 	@Id
@@ -23,7 +25,7 @@ public class User {
 	
 	@OneToMany(mappedBy="user", cascade=CascadeType.ALL, orphanRemoval=true)
 	private Set<Songlist> songlists;
-	
+
 	public User(Integer id, String userId, String lastName, String firstName) {
 		super();
 		this.id = id;
@@ -66,4 +68,14 @@ public class User {
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
+	
+	public Set<Songlist> getSonglists() {
+		return songlists;
+	}
+
+	public void setSonglists(Set<Songlist> songlists) {
+		this.songlists = songlists;
+	}
+	
+	
 }

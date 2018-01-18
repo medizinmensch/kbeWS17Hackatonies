@@ -4,9 +4,9 @@
     <persistence-unit name="songsRX-PU" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         
-        <class>de.htwBerlin.ai.kbe.songsRX.beans.Song</class>
-        <class>de.htwBerlin.ai.kbe.songsRX.beans.Songlist</class>
-        <class>de.htwBerlin.ai.kbe.songsRX.beans.User</class>
+        <class>de.htwBerlin.ai.kbe.songsRx.beans.Song</class>
+        <class>de.htwBerlin.ai.kbe.songsRx.beans.Songlist</class>
+        <class>de.htwBerlin.ai.kbe.songsRx.beans.User</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
         <properties>
