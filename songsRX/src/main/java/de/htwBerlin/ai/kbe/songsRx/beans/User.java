@@ -1,18 +1,15 @@
 package de.htwBerlin.ai.kbe.songsRx.beans;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "user")
 @Entity
+@Table(name = "User")
 public class User {
 	
 	@Id
@@ -22,9 +19,9 @@ public class User {
 	private String userId;
 	private String lastName;
 	private String firstName;
-	
+
 	@OneToMany(mappedBy="user", cascade=CascadeType.ALL, orphanRemoval=true)
-	private Set<Songlist> songlists;
+	private Collection<Songlist> songlists;
 
 	public User(Integer id, String userId, String lastName, String firstName) {
 		super();
@@ -69,11 +66,11 @@ public class User {
 		this.firstName = firstName;
 	}
 	
-	public Set<Songlist> getSonglists() {
+	public Collection<Songlist> getSonglists() {
 		return songlists;
 	}
 
-	public void setSonglists(Set<Songlist> songlists) {
+	public void setSonglists(Collection<Songlist> songlists) {
 		this.songlists = songlists;
 	}
 	

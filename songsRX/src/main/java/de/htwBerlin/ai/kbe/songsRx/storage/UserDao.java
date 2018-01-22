@@ -9,6 +9,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 
+import de.htwBerlin.ai.kbe.songsRx.beans.Song;
 import de.htwBerlin.ai.kbe.songsRx.beans.User;
 import de.htwBerlin.ai.kbe.songsRx.beans.Songlist;
 
@@ -42,6 +43,25 @@ public class UserDao implements IUserDao {
         }
 	}
 
+	public boolean userIsInDatabase(String userId) {
+        EntityManager em = emf.createEntityManager();
+
+        try {
+            TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.userId = :userId", User.class);
+            query.setParameter("userId", userId);
+            User user = query.getSingleResult();
+            if (user != null)
+                return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error adding user: " + e.getMessage());
+            throw new PersistenceException("Could not persist entity: " + e.toString());
+        } finally {
+            em.close();
+        }
+        return false;
+    }
+
 	@Override
 	public User getUser(String userId) {
 		// TODO Auto-generated method stub
@@ -52,7 +72,7 @@ public class UserDao implements IUserDao {
 	public Collection<User> getAllUsers() {
 		EntityManager em = emf.createEntityManager();
         try {
-            TypedQuery<User> query = em.createQuery("SELECT c FROM Contact c", User.class);
+            TypedQuery<User> query = em.createQuery("SELECT c FROM User c", User.class);
             return query.getResultList();
         } finally {
             em.close();

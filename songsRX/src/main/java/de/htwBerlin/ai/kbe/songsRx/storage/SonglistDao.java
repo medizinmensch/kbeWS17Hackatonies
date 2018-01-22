@@ -9,10 +9,8 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 
-import de.htwBerlin.ai.kbe.data.Contact;
 import de.htwBerlin.ai.kbe.songsRx.beans.Song;
 import de.htwBerlin.ai.kbe.songsRx.beans.Songlist;
-import de.htwBerlin.ai.kbe.songsRx.beans.User;
 
 public class SonglistDao implements ISonglistDao {
 

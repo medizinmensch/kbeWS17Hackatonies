@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "songlist")
 @Entity
+@Table(name = "Songlist")
 public class Songlist {
 
 	boolean isPublic;

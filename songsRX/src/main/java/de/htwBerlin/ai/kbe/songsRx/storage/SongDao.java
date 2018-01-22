@@ -17,6 +17,8 @@ public class SongDao implements ISongDao {
         EntityManager em = emf.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
         try {
+            //todo get id
+            song.setId(null);
             transaction.begin();
             em.persist(song);
             transaction.commit();
@@ -29,6 +31,7 @@ public class SongDao implements ISongDao {
         } finally {
             em.close();
         }
+
 	}
 
 	@Override

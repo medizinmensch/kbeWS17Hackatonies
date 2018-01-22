@@ -28,10 +28,11 @@ public class AuthenticationService { // schaut in die Map, (injiziertes POJO (is
     @GET
     @Produces({MediaType.TEXT_PLAIN})
     public Response getUserToken(@QueryParam("userId") String userId) {
+
         if (userId == null || userId.equals(""))
             return Response.status(Response.Status.BAD_REQUEST).build();
 
-        boolean userExists = UserStorage.getInstance().userExists(userId);
+        boolean userExists = userDao.userIsInDatabase(userId);
         if (userExists) {
             //generate token
             String token = authenticator.generateToken(userId);

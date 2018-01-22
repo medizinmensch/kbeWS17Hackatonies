@@ -12,4 +12,5 @@ public interface IUserDao {
 	public boolean updateUser(String userId, User updatedUser);
 	public boolean deleteUser(String userId);
 	public boolean userExists(String userId);
+	public boolean userIsInDatabase(String userId);
 }

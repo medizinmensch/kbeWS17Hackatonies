@@ -30,10 +30,10 @@ public class SongListsService {
         if (authenticator.hasOwnerPrivileges(userId, authToken)) {
             //return public & private playlists
             //Response.ok(songDao.getPlaylist())
-            return Response.ok(songlistDao.getAllSonglistsOfUser(userId)).build();
+            return Response.ok(songlistDao.getSonglistsOfUser(userId)).build();
         } else {
             //return only public playlists
-            return Response.ok(songlistDao.getAllPublicSonglistsOfUser(userId)).build();
+            return Response.ok(songlistDao.getPublicSonglistsOfUser(userId)).build();
         }
     }
 
@@ -47,13 +47,15 @@ public class SongListsService {
         boolean isPrivate = songlistDao.songlistIsPrivate(songListId);
         if (authenticator.hasOwnerPrivileges(userId, authToken)) {
             //return private playlist
-            return Response.ok(songlistDao.getSonglistOfUser(songListId, userId)).build();
+            //todo: what if songList from id is not the songlist of user
+            return Response.ok(songlistDao.getSonglist(songListId)).build();
         } else if (isPrivate) {
             //return error
             return Response.status(Response.Status.FORBIDDEN).build();
         } else {
             //return public playlist
-            return Response.ok(songlistDao.getSonglistOfUser(songListId, userId)).build();
+            //todo: is songlist public?
+            return Response.ok(songlistDao.getSonglist(songListId)).build();
         }
 
     }
@@ -67,7 +69,7 @@ public class SongListsService {
         //only create playlist if userId from url matches userId from authToken
         if (authenticator.hasOwnerPrivileges(userId, authToken)) {
             //create playlist, songlist id gets created from dao
-            Integer songlistId = songlistDao.createNewSongListOfUser(userId, songlistName, isPublic);
+            Integer songlistId = songlistDao.createNewSongList(userId, songlistName, isPublic);
             return Response.ok(songlistId).build();
         } else {
             return Response.status(Response.Status.FORBIDDEN).build();
@@ -114,7 +116,8 @@ public class SongListsService {
         //only delete playlist if userId from url matches userId from authToken
         if (authenticator.hasOwnerPrivileges(userId, authToken)) {
             //delete playlist
-            boolean success = songlistDao.deleteSonglistOfUser(userId, songListId);
+            //todo: check if songlist is from user
+            boolean success = songlistDao.deleteSonglist(songListId);
             if (success)
                 return Response.ok("Successfully deleted playlist with id:" + songListId).build();
 
