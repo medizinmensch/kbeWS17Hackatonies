@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<songlist>
+   <id>1</id>
+   <isPublic>True</isPublic>
+   <name>secondPlaylist</name>
+   <songs>
+      <song>
+         <album>Ghostbusters</album>
+         <artist>Fall Out Boy, Missy Elliott</artist>
+         <id>7</id>
+         <released>2016</released>
+         <title>Ghostbusters (I'm not a fraid)</title>
+      </song>
+      <song>
+         <album>Bla</album>
+         <artist>Iggy Azalea</artist>
+         <id>8</id>
+         <released>2016</released>
+         <title>Team</title>
+      </song>
+   </songs>
+</songlist>
+
+
