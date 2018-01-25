@@ -17,7 +17,6 @@ public class SongDao implements ISongDao {
         EntityManager em = emf.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
         try {
-            //todo get id
             song.setId(null);
             transaction.begin();
             em.persist(song);
@@ -59,7 +58,29 @@ public class SongDao implements ISongDao {
 
 	@Override
 	public boolean updateSong(Integer id, Song song) {
-		// TODO Auto-generated method stub
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+        Song entity = null;
+        try {
+            entity = em.find(Song.class, id);
+
+            // set new values
+            entity.setTitle(song.getTitle());
+            entity.setArtist(song.getArtist());
+            entity.setAlbum(song.getAlbum());
+            entity.setReleased(song.getReleased());
+
+            transaction.begin();
+            em.persist(entity);
+            transaction.commit();
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error updating Song.");
+            e.printStackTrace();
+        }
+        finally {
+            em.close();
+        }
 		return false;
 	}
 

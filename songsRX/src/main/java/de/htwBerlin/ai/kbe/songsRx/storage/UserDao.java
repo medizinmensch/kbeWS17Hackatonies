@@ -47,9 +47,7 @@ public class UserDao implements IUserDao {
         EntityManager em = emf.createEntityManager();
 
         try {
-            TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.userId = :userId", User.class);
-            query.setParameter("userId", userId);
-            User user = query.getSingleResult();
+            User user = getUser(userId);
             if (user != null)
                 return true;
         } catch (Exception e) {
@@ -64,8 +62,19 @@ public class UserDao implements IUserDao {
 
 	@Override
 	public User getUser(String userId) {
-		// TODO Auto-generated method stub
-		return null;
+        EntityManager em = emf.createEntityManager();
+
+        try {
+            TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.userId = :userId", User.class);
+            query.setParameter("userId", userId);
+            return query.getSingleResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error adding user: " + e.getMessage());
+            throw new PersistenceException("Could not persist entity: " + e.toString());
+        } finally {
+            em.close();
+        }
 	}
 
 	@Override

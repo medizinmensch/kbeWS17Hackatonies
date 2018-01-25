@@ -1,5 +1,6 @@
 package de.htwBerlin.ai.kbe.songsRx.beans;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.*;
@@ -10,23 +11,22 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "Songlist")
 public class Songlist {
 
-	boolean isPublic;
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	private String name;
-	
-	public Songlist() {}
-	
-	
-	@ManyToMany(cascade = CascadeType.PERSIST)
-	private List<Song> songs;
 
-	@JoinColumn(name="userId")
+    private boolean isPublic;
+	
+	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	private Collection<Song> songs;
+
 	@ManyToOne
+	@JoinColumn(name="user_Id")
 	private User user;
+
+	public Songlist() {}
 
 	public boolean isPublic() {
 		return isPublic;
@@ -44,11 +44,11 @@ public class Songlist {
 		this.name = name;
 	}
 
-	public List<Song> getSongs() {
+	public Collection<Song> getSongs() {
 		return songs;
 	}
 
-	public void setSongs(List<Song> songs) {
+	public void setSongs(Collection<Song> songs) {
 		this.songs = songs;
 	}
 
@@ -63,7 +63,13 @@ public class Songlist {
 	public void addSong(Song song) {
 		this.songs.add(song);
 	}
-	
-	
-	
+
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 }

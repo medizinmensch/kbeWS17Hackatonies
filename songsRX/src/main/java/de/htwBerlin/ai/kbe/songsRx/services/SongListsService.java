@@ -2,7 +2,10 @@ package de.htwBerlin.ai.kbe.songsRx.services;
 
 import de.htwBerlin.ai.kbe.songsRx.auth.IAuthenticator;
 import de.htwBerlin.ai.kbe.songsRx.beans.Song;
+import de.htwBerlin.ai.kbe.songsRx.beans.Songlist;
+import de.htwBerlin.ai.kbe.songsRx.beans.User;
 import de.htwBerlin.ai.kbe.songsRx.storage.ISonglistDao;
+import de.htwBerlin.ai.kbe.songsRx.storage.IUserDao;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -17,6 +20,9 @@ public class SongListsService {
 
     @Inject
     private ISonglistDao songlistDao;
+
+    @Inject
+    private IUserDao userDao;
 
     @Context
     HttpHeaders headers;
@@ -60,8 +66,9 @@ public class SongListsService {
 
     }
 
-
+    /*
     @POST
+    @Consumes({MediaType.TEXT_PLAIN})
     @Produces({MediaType.TEXT_PLAIN})
     public Response createSongList(@PathParam("userId") String userId, @QueryParam("songlistName") String songlistName, @QueryParam("isPublic") boolean isPublic) {
         String authToken = headers.getRequestHeader("Authorization").get(0);
@@ -69,7 +76,26 @@ public class SongListsService {
         //only create playlist if userId from url matches userId from authToken
         if (authenticator.hasOwnerPrivileges(userId, authToken)) {
             //create playlist, songlist id gets created from dao
-            Integer songlistId = songlistDao.createNewSongList(userId, songlistName, isPublic);
+            User user = userDao.getUser(userId);
+            Integer songlistId = songlistDao.createNewSongList(user, songlistName, isPublic);
+            return Response.ok(songlistId).build();
+        } else {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+    }
+    */
+
+    @POST
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.TEXT_PLAIN})
+    public Response createSongListWithPayload(@PathParam("userId") String userId, Songlist songlist) {
+        String authToken = headers.getRequestHeader("Authorization").get(0);
+
+        //only create playlist if userId from url matches userId from authToken
+        if (authenticator.hasOwnerPrivileges(userId, authToken)) {
+            //create playlist, songlist id gets created from dao
+            User user = userDao.getUser(userId);
+            Integer songlistId = songlistDao.createNewSongListWithPayload(user, songlist);
             return Response.ok(songlistId).build();
         } else {
             return Response.status(Response.Status.FORBIDDEN).build();
@@ -86,7 +112,7 @@ public class SongListsService {
         //only update playlist if userId from url matches userId from authToken
         if (authenticator.hasOwnerPrivileges(userId, authToken)) {
             //add songs to song playlist
-            //boolean success = songlistDao.addSongsToSonglist(songListId, songs);
+            boolean success = songlistDao.addSongsToSonglist(songListId, songs);
             return Response.ok(false).build();
         } else {
             return Response.status(Response.Status.FORBIDDEN).build();

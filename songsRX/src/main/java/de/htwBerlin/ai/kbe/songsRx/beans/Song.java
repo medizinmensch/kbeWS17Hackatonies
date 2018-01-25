@@ -35,38 +35,6 @@ public class Song {
 		this.released = released;
 	}
 
-	public static class Builder {
-		//required parameter
-		private Integer id;
-		private String title;
-		private String artist;
-		private String album;
-		private Integer released;
-
-		public Builder(Integer id, String title, String artist, String album, Integer released) {
-			this.id = id;
-			this.title = title;
-			this.artist = artist;
-			this.album = album;
-			this.released = released;
-		}
-
-		public Song build() {
-			return new Song(this);
-		}
-	}
-
-	private Song(Builder builder) {
-		this.id = builder.id;
-		this.title = builder.title;
-		this.artist = builder.artist;
-		this.album = builder.album;
-		this.released = builder.released;
-	}
-
-
-
-
 	public Integer getId() {
 		return id;
 	}
@@ -118,4 +86,34 @@ public class Song {
 		return "Song [id=" + id + ", Title=" + title + ", Artist=" + artist + ", Album=" + album
 				+ ", Released=" + released + "]";
 	}
+
+	public static class Builder {
+		//required parameter
+		private Integer id;
+		private String title;
+		private String artist;
+		private String album;
+		private Integer released;
+
+		public Builder(Integer id, String title, String artist, String album, Integer released) {
+			this.id = id;
+			this.title = title;
+			this.artist = artist;
+			this.album = album;
+			this.released = released;
+		}
+
+		public Song build() {
+			return new Song(this);
+		}
+	}
+
+	private Song(Builder builder) {
+		this.id = builder.id;
+		this.title = builder.title;
+		this.artist = builder.artist;
+		this.album = builder.album;
+		this.released = builder.released;
+	}
+
 }
