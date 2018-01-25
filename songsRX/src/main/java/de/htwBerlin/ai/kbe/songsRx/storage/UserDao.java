@@ -123,7 +123,11 @@ public class UserDao implements IUserDao {
 	public boolean userExists(String userId) {
         return false;
 	}
-	
+
+	public Integer getIdFromUserId(String userId) {
+        User user = getUser(userId);
+        return user.getId();
+    }
 	
 	
 	

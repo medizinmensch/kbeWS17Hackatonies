@@ -1,10 +1,13 @@
 package de.htwBerlin.ai.kbe.songsRx.beans;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 @XmlRootElement(name = "songlist")
 @Entity
@@ -19,7 +22,7 @@ public class Songlist {
 
     private boolean isPublic;
 	
-	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER) //cascade = CascadeType.PERSIST
 	private Collection<Song> songs;
 
 	@ManyToOne
@@ -52,10 +55,13 @@ public class Songlist {
 		this.songs = songs;
 	}
 
+	@JsonIgnore
+	@XmlTransient
 	public User getUser() {
 		return user;
 	}
 
+	@JsonIgnore
 	public void setUser(User user) {
 		this.user = user;
 	}

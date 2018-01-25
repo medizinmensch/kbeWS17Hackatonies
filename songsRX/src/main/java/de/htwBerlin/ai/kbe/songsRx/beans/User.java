@@ -20,7 +20,7 @@ public class User {
 	private String lastName;
 	private String firstName;
 
-	@OneToMany(mappedBy="user", cascade=CascadeType.ALL, orphanRemoval=true, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="user", orphanRemoval=true, fetch = FetchType.EAGER)
 	private Collection<Songlist> songlists;
 
 	public User(Integer id, String userId, String lastName, String firstName) {

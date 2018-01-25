@@ -6,11 +6,14 @@ import de.htwBerlin.ai.kbe.songsRx.beans.Songlist;
 import de.htwBerlin.ai.kbe.songsRx.beans.User;
 import de.htwBerlin.ai.kbe.songsRx.storage.ISonglistDao;
 import de.htwBerlin.ai.kbe.songsRx.storage.IUserDao;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 @Path("/userId/{userId}/songLists")
 public class SongListsService {
@@ -29,17 +32,20 @@ public class SongListsService {
 
 
     @GET
-    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Response getAllSonglists(@PathParam("userId") String userId) {
         String authToken = headers.getRequestHeader("Authorization").get(0);
+        if (userId == null)
+            return Response.status(Response.Status.BAD_REQUEST).build();
+
+        User user = userDao.getUser(userId);
 
         if (authenticator.hasOwnerPrivileges(userId, authToken)) {
             //return public & private playlists
-            //Response.ok(songDao.getPlaylist())
-            return Response.ok(songlistDao.getSonglistsOfUser(userId)).build();
+            return Response.ok(songlistDao.getSonglistsOfUser(user)).build();
         } else {
             //return only public playlists
-            return Response.ok(songlistDao.getPublicSonglistsOfUser(userId)).build();
+            return Response.ok(songlistDao.getPublicSonglistsOfUser(user)).build();
         }
     }
 
@@ -51,17 +57,21 @@ public class SongListsService {
 
         //if songlist private
         boolean isPrivate = songlistDao.songlistIsPrivate(songListId);
+        User user = userDao.getUser(userId);
+
         if (authenticator.hasOwnerPrivileges(userId, authToken)) {
             //return private playlist
-            //todo: what if songList from id is not the songlist of user
-            return Response.ok(songlistDao.getSonglist(songListId)).build();
+            Songlist songlist = songlistDao.getSonglist(songListId, user);
+            if (songlist == null)
+                return Response.status(Response.Status.FORBIDDEN).build();
+
+            return Response.ok(songlist).build();
         } else if (isPrivate) {
             //return error
             return Response.status(Response.Status.FORBIDDEN).build();
         } else {
             //return public playlist
-            //todo: is songlist public?
-            return Response.ok(songlistDao.getSonglist(songListId)).build();
+            return Response.ok(songlistDao.getSonglist(songListId, user)).build();
         }
 
     }
@@ -91,18 +101,22 @@ public class SongListsService {
     public Response createSongListWithPayload(@PathParam("userId") String userId, Songlist songlist) {
         String authToken = headers.getRequestHeader("Authorization").get(0);
 
+        if (songlist == null)
+            return Response.status(Response.Status.BAD_REQUEST).build();
+
         //only create playlist if userId from url matches userId from authToken
         if (authenticator.hasOwnerPrivileges(userId, authToken)) {
             //create playlist, songlist id gets created from dao
             User user = userDao.getUser(userId);
             Integer songlistId = songlistDao.createNewSongListWithPayload(user, songlist);
+            if (songlistId.equals(0))
+                return Response.status(Response.Status.BAD_REQUEST).build();
             return Response.ok(songlistId).build();
         } else {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
     }
 
-    //create post method to add song to playlist
 
     @PUT
     @Path("/{songListId}")
@@ -139,15 +153,18 @@ public class SongListsService {
     public Response deletePlaylist(@PathParam("userId") String userId, @PathParam("songListId") Integer songListId) {
         String authToken = headers.getRequestHeader("Authorization").get(0);
 
+        if (!songlistDao.songlistExists(songListId))
+            return Response.status(Response.Status.NOT_FOUND).build();
+
         //only delete playlist if userId from url matches userId from authToken
         if (authenticator.hasOwnerPrivileges(userId, authToken)) {
             //delete playlist
-            //todo: check if songlist is from user
-            boolean success = songlistDao.deleteSonglist(songListId);
+            User user = userDao.getUser(userId);
+            boolean success = songlistDao.deleteSonglist(songListId, user);
             if (success)
-                return Response.ok("Successfully deleted playlist with id:" + songListId).build();
+                return Response.ok("Successfully deleted playlist with id: " + songListId).build();
 
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.FORBIDDEN).build();
         } else {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
