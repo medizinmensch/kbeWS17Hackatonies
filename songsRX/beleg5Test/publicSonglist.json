@@ -1,0 +1,21 @@
+{
+  "id": 1, 
+  "isPublic": "True", 
+  "name": "secondPlaylist", 
+  "songs": [
+    {
+      "album": "Ghostbusters", 
+      "artist": "Fall Out Boy, Missy Elliott", 
+      "id": 7, 
+      "released": 2016, 
+      "title": "Ghostbusters (I'm not a fraid)"
+    }, 
+    {
+      "album": "Bla", 
+      "artist": "Iggy Azalea", 
+      "id": 8, 
+      "released": 2016, 
+      "title": "Team"
+    }
+  ]
+}
