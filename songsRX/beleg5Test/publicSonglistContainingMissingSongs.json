@@ -1,6 +1,6 @@
 {
   "id": 1, 
-  "isPublic": "True", 
+  "public": "True", 
   "name": "secondPlaylist", 
   "songs": [
     {

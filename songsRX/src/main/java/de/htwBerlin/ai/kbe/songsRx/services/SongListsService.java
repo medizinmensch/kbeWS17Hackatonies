@@ -76,7 +76,59 @@ public class SongListsService {
 
     }
 
-    /*
+    @POST
+    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Produces({MediaType.TEXT_PLAIN})
+    public Response createSongListWithPayload(@PathParam("userId") String userId, Songlist songlist, @Context UriInfo uriInfo) {
+        String authToken = headers.getRequestHeader("Authorization").get(0);
+
+        if (songlist == null)
+            return Response.status(Response.Status.BAD_REQUEST).build();
+
+        //only create playlist if userId from url matches userId from authToken
+        if (authenticator.hasOwnerPrivileges(userId, authToken)) {
+            //create playlist, songlist id gets created from dao
+            User user = userDao.getUser(userId);
+            Integer songlistId = songlistDao.createNewSongListWithPayload(user, songlist);
+
+            if (songlistId.equals(0))
+                return Response.status(Response.Status.BAD_REQUEST).build();
+
+            //setting location header with new id 
+            UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
+            uriBuilder.path(Integer.toString(songlistId));
+            return Response.status(Response.Status.CREATED).header("Location-Header", uriBuilder.build()).build();
+        } else {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+    }
+
+    @DELETE
+    @Path("/{songListId}")
+    public Response deletePlaylist(@PathParam("userId") String userId, @PathParam("songListId") Integer songListId) {
+        String authToken = headers.getRequestHeader("Authorization").get(0);
+
+        if (!songlistDao.songlistExists(songListId))
+            return Response.status(Response.Status.NOT_FOUND).build();
+
+        //only delete playlist if userId from url matches userId from authToken
+        if (authenticator.hasOwnerPrivileges(userId, authToken)) {
+            //delete playlist
+            User user = userDao.getUser(userId);
+            boolean success = songlistDao.deleteSonglist(songListId, user);
+            if (success)
+                return Response.ok("Successfully deleted playlist with id: " + songListId).build();
+
+            return Response.status(Response.Status.FORBIDDEN).build();
+        } else {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+    }
+
+    // more methods for higher usability. not yet finished and tested
+    // also not neccessary for abgabe 5
+
+       /*
     @POST
     @Consumes({MediaType.TEXT_PLAIN})
     @Produces({MediaType.TEXT_PLAIN})
@@ -94,29 +146,6 @@ public class SongListsService {
         }
     }
     */
-
-    @POST
-    @Consumes({MediaType.APPLICATION_JSON})
-    @Produces({MediaType.TEXT_PLAIN})
-    public Response createSongListWithPayload(@PathParam("userId") String userId, Songlist songlist) {
-        String authToken = headers.getRequestHeader("Authorization").get(0);
-
-        if (songlist == null)
-            return Response.status(Response.Status.BAD_REQUEST).build();
-
-        //only create playlist if userId from url matches userId from authToken
-        if (authenticator.hasOwnerPrivileges(userId, authToken)) {
-            //create playlist, songlist id gets created from dao
-            User user = userDao.getUser(userId);
-            Integer songlistId = songlistDao.createNewSongListWithPayload(user, songlist);
-            if (songlistId.equals(0))
-                return Response.status(Response.Status.BAD_REQUEST).build();
-            return Response.ok(songlistId).build();
-        } else {
-            return Response.status(Response.Status.FORBIDDEN).build();
-        }
-    }
-
 
     @PUT
     @Path("/{songListId}")
@@ -148,26 +177,6 @@ public class SongListsService {
         }
     }
 
-    @DELETE
-    @Path("/{songListId}")
-    public Response deletePlaylist(@PathParam("userId") String userId, @PathParam("songListId") Integer songListId) {
-        String authToken = headers.getRequestHeader("Authorization").get(0);
 
-        if (!songlistDao.songlistExists(songListId))
-            return Response.status(Response.Status.NOT_FOUND).build();
-
-        //only delete playlist if userId from url matches userId from authToken
-        if (authenticator.hasOwnerPrivileges(userId, authToken)) {
-            //delete playlist
-            User user = userDao.getUser(userId);
-            boolean success = songlistDao.deleteSonglist(songListId, user);
-            if (success)
-                return Response.ok("Successfully deleted playlist with id: " + songListId).build();
-
-            return Response.status(Response.Status.FORBIDDEN).build();
-        } else {
-            return Response.status(Response.Status.UNAUTHORIZED).build();
-        }
-    }
 
 }

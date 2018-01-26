@@ -12,9 +12,9 @@ if [ -z "$1" ]
 	then 
 		echo "You need exactly 4 Arguments:
 # arg #1: token of ${userA}
-# arg #2: songlist_id of songlist that exists and belongs to ${userA}
+# arg #2: songlist_id of private songlist that exists and belongs to ${userA}
 # arg #3: token of ${userB}
-# arg #4: songlist_id of songlist that exists and belongs to ${userB}"
+# arg #4: songlist_id of public songlist that exists and belongs to ${userB}"
 		exit 1
 	else
 		echo " "
@@ -39,7 +39,7 @@ curl -s \
 	 -X GET \
 	 -H "Authorization: $1" \
      -H "Accept: application/json" \
-     -v "http://localhost:8080/songsRX/rest/userId/${userA}/songlists"
+     -v "http://localhost:8080/songsRX/rest/userId/${userA}/songLists"
 echo " "
 echo "-----------------------------------------------------------------"
 
@@ -49,39 +49,39 @@ curl -s \
 	 -X GET \
 	 -H "Authorization: $1" \
      -H "Accept: application/json" \
-     -v "http://localhost:8080/songsRX/rest/userId/${userB}/songlists"
+     -v "http://localhost:8080/songsRX/rest/userId/${userB}/songLists"
 echo " "
 echo "-----------------------------------------------------------------"
 
 echo "GET b.1"
-echo "--- <${userA}> REQUESTING one of <${userA}>'s songlists  (Should work) ------------"
+echo "--- <${userA}> REQUESTING one of <${userA}>'s private songlists  (Should work) ------------"
 curl -s \
 	 -X GET \
 	 -H "Authorization: $1" \
      -H "Accept: application/json" \
-     -v "http://localhost:8080/songsRX/rest/userId/${userA}/songlists/$4"
+     -v "http://localhost:8080/songsRX/rest/userId/${userA}/songLists/$2"
 echo " "
 echo "-----------------------------------------------------------------"
 
 echo "GET b.2"
-echo "--- <${userA}> REQUESTING one of <${userB}>'s songlists  (Should not work) ------------"
+echo "--- <${userA}> REQUESTING one of <${userB}>'s public songlists  (Should work) ------------"
 curl -s \
 	 -X GET \
 	 -H "Authorization: $1" \
      -H "Accept: application/json" \
-     -v "http://localhost:8080/songsRX/rest/userId/${userB}/songlists/$4"
+     -v "http://localhost:8080/songsRX/rest/userId/${userB}/songLists/$4"
 echo " "
 echo "-----------------------------------------------------------------"
 
 
 echo "POST c.1"
-echo "---SONGLIST WITHOUT TOKEN:------------------"
+echo "---SONGLIST WITHOUT TOKEN:--------SHOULD BE FORBIDDEN----------"
 curl -s \
 	 -X POST \
      -H "Content-Type: application/json" \
      -H "Accept: text/plain" \
      -d "@publicSonglist.json" \
-     -v "http://localhost:8080/songsRX/rest/userId/${userA}/songlists"
+     -v "http://localhost:8080/songsRX/rest/userId/${userA}/songLists"
 echo " "
 echo "-----------------------------------------------------------------"
 
@@ -93,7 +93,7 @@ curl -s \
      -H "Content-Type: application/json" \
      -H "Accept: text/plain" \
      -d "@publicSonglist.json" \
-     -v "http://localhost:8080/songsRX/rest/userId/${userA}/songlists"
+     -v "http://localhost:8080/songsRX/rest/userId/${userA}/songLists"
 echo " "
 echo "-----------------------------------------------------------------"
 
@@ -105,7 +105,7 @@ curl -s \
      -H "Content-Type: application/json" \
      -H "Accept: text/plain" \
      -d "@privateSonglist.json" \
-     -v "http://localhost:8080/songsRX/rest/userId/${userA}/songlists"
+     -v "http://localhost:8080/songsRX/rest/userId/${userA}/songLists"
 echo " "
 echo "-----------------------------------------------------------------"
 
@@ -118,7 +118,7 @@ curl -s \
      -H "Content-Type: application/xml" \
      -H "Accept: text/plain" \
      -d "@publicSonglist.xml" \
-     -v "http://localhost:8080/songsRX/rest/userId/${userA}/songlists"
+     -v "http://localhost:8080/songsRX/rest/userId/${userA}/songLists"
 echo " "
 echo "-----------------------------------------------------------------"
 
@@ -130,7 +130,7 @@ curl -s \
      -H "Content-Type: application/json" \
      -H "Accept: text/plain" \
      -d "@publicSonglistContainingMissingSongs.json" \
-     -v "http://localhost:8080/songsRX/rest/userId/${userA}/songlists"
+     -v "http://localhost:8080/songsRX/rest/userId/${userA}/songLists"
 echo " "
 echo "-----------------------------------------------------------------"
 
@@ -138,26 +138,29 @@ echo "DELETE d.1"
 echo "--- SONGLIST OF ${userA}, ID: $2 (SHOULD WORK) --------"
 curl -s \
 	 -X DELETE \
+	 -H "Authorization: $1" \
      -H "Accept: text/plain" \
-     -v "http://localhost:8080/songsRX/rest/userId/${userA}/songlists/$2"
+     -v "http://localhost:8080/songsRX/rest/userId/${userA}/songLists/$2"
 echo " "
 echo "-------------------------------------------------------------------------------------------------"
 
 echo "DELETE d.2"
-echo "--- SONGLIST OF ${userB}, ID: $2 (SHOULD NOT WORK)--------"
+echo "--- SONGLIST OF ${userB}, ID: $4 (SHOULD BE FORBIDDEN)-------"
 curl -s \
 	 -X DELETE \
+	 -H "Authorization: $1" \
      -H "Accept: text/plain" \
-     -v "http://localhost:8080/songsRX/rest/userId/${userB}/songlists/$2"
+     -v "http://localhost:8080/songsRX/rest/userId/${userB}/songLists/$4"
 echo " "
 echo "-------------------------------------------------------------------------------------------------"
 
 echo "DELETE d.3"
-echo "--- SONGLIST THAT DOES NOT EXIST, ID: 99942 --------"
+echo "--- SONGLIST THAT DOES NOT EXIST, ID: 9042 --------"
 curl -s \
+     -H "Authorization: $1" \
 	 -X DELETE \
      -H "Accept: text/plain" \
-     -v "http://localhost:8080/songsRX/rest/userId/${userA}/songlists/9942"
+     -v "http://localhost:8080/songsRX/rest/userId/${userA}/songLists/9042"
 echo " "
 echo "-------------------------------------------------------------------------------------------------"
 
