@@ -55,25 +55,24 @@ public class SongListsService {
     public Response getSingleSonglist(@PathParam("userId") String userId, @PathParam("songListId") Integer songListId) {
         String authToken = headers.getRequestHeader("Authorization").get(0);
 
-        //if songlist private
-        boolean isPrivate = songlistDao.songlistIsPrivate(songListId);
         User user = userDao.getUser(userId);
+        Songlist songlist = songlistDao.getSonglist(songListId, user);
 
-        if (authenticator.hasOwnerPrivileges(userId, authToken)) {
+        boolean isPrivate = songlistDao.songlistIsPrivate(songListId);
+
+        // songlist does not exist (for the given userId)
+        if (songlist == null)
+            return Response.status(Response.Status.NOT_FOUND).build();
+
+        if (isPrivate && authenticator.hasOwnerPrivileges(userId, authToken)) {
             //return private playlist
-            Songlist songlist = songlistDao.getSonglist(songListId, user);
-
-            //songlist does not exist or does not belong to the given userId
-            if (songlist == null)
-                return Response.status(Response.Status.NOT_FOUND).build();
-
             return Response.ok(songlist).build();
         } else if (isPrivate) {
             //return error
             return Response.status(Response.Status.FORBIDDEN).build();
         } else {
             //return public playlist
-            return Response.ok(songlistDao.getSonglist(songListId, user)).build();
+            return Response.ok(songlist).build();
         }
 
     }
