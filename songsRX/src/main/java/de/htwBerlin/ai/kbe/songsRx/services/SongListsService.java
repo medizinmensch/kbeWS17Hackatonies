@@ -62,8 +62,10 @@ public class SongListsService {
         if (authenticator.hasOwnerPrivileges(userId, authToken)) {
             //return private playlist
             Songlist songlist = songlistDao.getSonglist(songListId, user);
+
+            //songlist does not exist or does not belong to the given userId
             if (songlist == null)
-                return Response.status(Response.Status.FORBIDDEN).build();
+                return Response.status(Response.Status.NOT_FOUND).build();
 
             return Response.ok(songlist).build();
         } else if (isPrivate) {
@@ -94,7 +96,7 @@ public class SongListsService {
             if (songlistId.equals(0))
                 return Response.status(Response.Status.BAD_REQUEST).build();
 
-            //setting location header with new id 
+            //setting location header with new id
             UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
             uriBuilder.path(Integer.toString(songlistId));
             return Response.status(Response.Status.CREATED).header("Location-Header", uriBuilder.build()).build();

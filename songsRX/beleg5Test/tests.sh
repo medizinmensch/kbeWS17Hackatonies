@@ -75,7 +75,7 @@ echo "-----------------------------------------------------------------"
 
 
 echo "POST c.1"
-echo "---SONGLIST WITHOUT TOKEN:--------SHOULD BE FORBIDDEN----------"
+echo "--- SONGLIST WITHOUT TOKEN:	(Should be forbidden) ------------------"
 curl -s \
 	 -X POST \
      -H "Content-Type: application/json" \
@@ -86,7 +86,7 @@ echo " "
 echo "-----------------------------------------------------------------"
 
 echo "POST c.2"
-echo "---PUBLIC SONGLIST: ------------------"
+echo "--- PUBLIC SONGLIST: ------------------"
 curl -s \
 	 -X POST \
      -H "Authorization: $1" \
@@ -98,7 +98,7 @@ echo " "
 echo "-----------------------------------------------------------------"
 
 echo "POST c.3"
-echo "---PRIVATE SONGLIST: ------------------"
+echo "--- PRIVATE SONGLIST (JSON): ------------------"
 curl -s \
 	 -X POST \
      -H "Authorization: $1" \
@@ -111,7 +111,7 @@ echo "-----------------------------------------------------------------"
 
 
 echo "POST c.4"
-echo "---PUBLIC SONGLIST: (XML)------------------"
+echo "--- PUBLIC SONGLIST (XML): ------------------"
 curl -s \
 	 -X POST \
      -H "Authorization: $1" \
@@ -123,7 +123,7 @@ echo " "
 echo "-----------------------------------------------------------------"
 
 echo "POST c.5"
-echo "---PUBLIC SONGLIST, CONTAINING MISSING SONG: ------------------"
+echo "--- PUBLIC SONGLIST (CONTAINING MISSING SONG): 	(Should be bad request) ------------------"
 curl -s \
 	 -X POST \
      -H "Authorization: $1" \
@@ -155,7 +155,7 @@ echo " "
 echo "-------------------------------------------------------------------------------------------------"
 
 echo "DELETE d.3"
-echo "--- SONGLIST THAT DOES NOT EXIST, ID: 9042 --------"
+echo "--- SONGLIST THAT DOES NOT EXIST, ID: 9042 	(SHOULD BE NOT FOUND)--------"
 curl -s \
      -H "Authorization: $1" \
 	 -X DELETE \
